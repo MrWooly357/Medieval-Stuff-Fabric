@@ -1,0 +1,106 @@
+/*public List<Entity> getEntitiesToSpawn(ServerWorld world, Function<Entity, Float> yaw, Function<Entity, Float> pitch, Consumer<Entity> initializer, Spawner spawner) {
+        List<Entity> entities = new ArrayList<>();
+        int amount = this.amount.get(world.getRandom());
+
+        for (int i = 0; i < amount; i++) {
+            Position pos = spawner.nextSpawnPos(world, i);
+            boolean canSpawn = true;
+            Entity entity = EntityType.loadEntityWithPassengers(this.entity, world, entity1 -> {
+                entity1.refreshPositionAndAngles(pos.getX(), pos.getY(), pos.getZ(), yaw.apply(entity1), pitch.apply(entity1));
+
+                if (entity1 instanceof MobEntity mob) {
+                    mob.initialize(world, world.getLocalDifficulty(BlockPos.ofFloored(pos)), SpawnReason.SPAWNER, null);
+                    mob.setPersistent();
+                    equipment.ifPresent(mob::setEquipmentFromTable);
+                }
+
+                initializer.accept(entity1);
+
+                return entity1;
+            });
+
+            if (!ignoreVanillaSpawnRules && entity instanceof MobEntity mob && !mob.canSpawn(world))
+                canSpawn = false;
+
+            if (customSpawnRules.isPresent() && canSpawn) {
+                List<SpawnRule> rules = customSpawnRules.orElseThrow();
+
+                for (SpawnRule rule : rules)
+
+                    if (!rule.test(world, pos, entity, spawner)) {
+                        canSpawn = false;
+
+                        break;
+                    }
+            }
+
+            if (canSpawn)
+                entities.add(entity);
+        }
+
+        return List.copyOf(entities);
+    }*/
+
+/*public List<Entity> getEntitiesToSpawn(ServerWorld world, RotationCalculator rotation, BiConsumer<Integer, Entity> initializer, Spawner spawner, int multiplier) {
+        List<Entry> fixed = new ArrayList<>();
+        List<Entry> weighted = new ArrayList<>();
+        entries.forEach(entry -> {
+            Entry.Type contextType = entry.contextType;
+
+            if (contextType.equals(Entry.Type.FIXED))
+                fixed.add(entry);
+            else if (contextType.equals(Entry.Type.WEIGHTED))
+                weighted.add(entry);
+        });
+        List<Entity> entities = new ArrayList<>();
+        Random random = world.getRandom();
+        int total = totalEntities.get(random) * multiplier;
+        int index = 0;
+
+        for (Entry entry : fixed) {
+            int finalIndex = index;
+            List<Entity> entities1 = entry.pool.getEntitiesToSpawn(world, entity -> rotation.get(world, random, entity, RotationCalculator.Type.YAW),
+                    entity -> rotation.get(world, random, entity, RotationCalculator.Type.PITCH), entity -> initializer.accept(finalIndex, entity), spawner);
+
+            for (Entity entity : entities1) {
+                index++;
+
+                if (index > total)
+                    return List.copyOf(entities);
+                else
+                    entities.add(entity);
+
+                if (index == total)
+                    return List.copyOf(entities);
+            }
+        }
+
+        if (index < total) {
+            DataPool.Builder<SpawnPool> dataBuilder = DataPool.builder();
+            weighted.forEach(entry -> dataBuilder.add(entry.pool, entry.weight));
+            DataPool<SpawnPool> data = dataBuilder.build();
+
+            while (true) {
+                int finalIndex = index;
+                List<Entity> entities1 = data.getDataOrEmpty(random).map(pool -> pool.getEntitiesToSpawn(world, entity -> rotation.get(world, random, entity, RotationCalculator.Type.YAW),
+                        entity -> rotation.get(world, random, entity, RotationCalculator.Type.PITCH), entity -> initializer.accept(finalIndex, entity), spawner)).orElse(List.of());
+
+                if (entities1.isEmpty())
+                    break;
+
+                for (Entity entity : entities1) {
+                    index++;
+
+                    if (index > total)
+                        return List.copyOf(entities);
+                    else
+                        entities.add(entity);
+
+                    if (index == total)
+                        return List.copyOf(entities);
+                }
+            }
+        }
+
+        return List.copyOf(entities);
+    }*/

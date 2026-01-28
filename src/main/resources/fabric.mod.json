@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "medievalstuff",
+	"version": "${version}",
+	"name": "Medieval Stuff",
+	"description": "An RPG-like mod with cool mechanics, mobs and bosses!",
+	"authors": [
+		"MrWooly357"
+	],
+	"contact": {},
+	"license": "MIT",
+	"icon": "assets/medievalstuff/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.mrwooly357.medievalstuff.MedievalStuff"
+		],
+		"client": [
+			"net.mrwooly357.medievalstuff.MSClient"
+		],
+		"fabric-datagen": [
+			"net.mrwooly357.medievalstuff.datagen.MSDataGenerator"
+		]
+	},
+	"mixins": [
+		"medievalstuff.mixins.json"
+	],
+	"accessWidener": "medievalstuff.accessWidener",
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
