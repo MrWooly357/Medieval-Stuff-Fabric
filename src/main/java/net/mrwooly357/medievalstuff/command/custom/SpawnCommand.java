@@ -12,7 +12,7 @@ import net.minecraft.text.Text;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContextParameters;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContextTypes;
-import net.mrwooly357.medievalstuff.registry.MSRegistries;
+import net.mrwooly357.medievalstuff.registry.MSRegistryKeys;
 
 public final class SpawnCommand {
 
@@ -27,16 +27,16 @@ public final class SpawnCommand {
         dispatcher.register(
                 CommandManager.literal("spawn")
                         .then(
-                                CommandManager.argument("table", RegistryKeyArgumentType.registryKey(MSRegistries.SPAWN_TABLE_KEY))
+                                CommandManager.argument("table", RegistryKeyArgumentType.registryKey(MSRegistryKeys.SPAWN_TABLE))
                                         .then(
-                                                CommandManager.argument("pos", Vec3ArgumentType.vec3())
+                                                CommandManager.argument("offset", Vec3ArgumentType.vec3())
                                                         .executes(context -> {
                                                             ServerCommandSource source = context.getSource();
-                                                            registryAccess.getWrapperOrThrow(MSRegistries.SPAWN_TABLE_KEY)
-                                                                    .getOptional(RegistryKeyArgumentType.getKey(context, "table", MSRegistries.SPAWN_TABLE_KEY, INVALID_KEY_EXCEPTION)).orElseThrow().value()
+                                                            registryAccess.getWrapperOrThrow(MSRegistryKeys.SPAWN_TABLE)
+                                                                    .getOptional(RegistryKeyArgumentType.getKey(context, "table", MSRegistryKeys.SPAWN_TABLE, INVALID_KEY_EXCEPTION)).orElseThrow().value()
                                                                     .generateEntities(
                                                                             SpawnContext.builder()
-                                                                                    .parameter(SpawnContextParameters.ORIGIN, Vec3ArgumentType.getVec3(context, "pos"))
+                                                                                    .parameter(SpawnContextParameters.ORIGIN, Vec3ArgumentType.getVec3(context, "offset"))
                                                                                     .build(SpawnContextTypes.GENERIC, source.getWorld())
                                                                     );
 

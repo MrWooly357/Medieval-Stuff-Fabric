@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.registry.Registry;
 import net.mrwooly357.medievalstuff.MedievalStuff;
 import net.mrwooly357.medievalstuff.entity.spawn.pos_finder.custom.FixedSpawnPosFinder;
+import net.mrwooly357.medievalstuff.entity.spawn.pos_finder.custom.RandomSpawnPosFinder;
 import net.mrwooly357.medievalstuff.registry.MSRegistries;
 import net.mrwooly357.medievalstuff.util.MSUtil;
 
@@ -11,6 +12,9 @@ public final class SpawnPosFinderTypes {
 
     public static final SpawnPosFinderType<FixedSpawnPosFinder> FIXED = register(
             "fixed", FixedSpawnPosFinder.CODEC
+    );
+    public static final SpawnPosFinderType<RandomSpawnPosFinder> RANDOM = register(
+            "random", RandomSpawnPosFinder.CODEC
     );
 
     private SpawnPosFinderTypes() {}
@@ -21,6 +25,6 @@ public final class SpawnPosFinderTypes {
     }
 
     public static void initialize() {
-        MedievalStuff.logInitialization("spawn pos finder types");
+        MedievalStuff.logInitialization("spawn offset finder types");
     }
 }

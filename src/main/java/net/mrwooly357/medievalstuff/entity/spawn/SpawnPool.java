@@ -63,7 +63,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
         rules.forEach(context::check);
         functions.forEach(context::check);
         List<Entity> entities = new ArrayList<>();
-        selector.select(entries).forEach(entry -> entities.addAll(entry.generateEntities(context)));
+        selector.select(entries, context).forEach(entry -> entities.addAll(entry.generateEntities(context)));
 
         return List.copyOf(entities);
     }

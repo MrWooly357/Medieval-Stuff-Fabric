@@ -94,15 +94,16 @@ public abstract class LeafSpawnEntry extends SpawnEntry {
     public List<Entity> tryGenerateEntities(SpawnContext context) {
         rules.forEach(context::check);
         functions.forEach(context::check);
-
         List<Entity> entities = new ArrayList<>();
         createEntities(context).forEach(entity -> {
-            Vec3d pos = posFinder.nextPos(context);
+            List<Vec3d> banned = new ArrayList<>();
+            Vec3d pos = posFinder.nextPos(context, banned);
             int attempt = 1;
             int maxAttempts = posFinder.getMaxAttempts();
 
             while (!combinedRule.test(pos, entity, context) && attempt < maxAttempts) {
-                pos = posFinder.nextPos(context);
+                banned.add(pos);
+                pos = posFinder.nextPos(context, banned);
                 attempt++;
             }
 

@@ -15,18 +15,18 @@ import net.mrwooly357.medievalstuff.entity.spawn.function.custom.InitializeSpawn
 import net.mrwooly357.medievalstuff.entity.spawn.function.custom.SpawnSpawnFunction;
 import net.mrwooly357.medievalstuff.entity.spawn.pos_finder.custom.FixedSpawnPosFinder;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.custom.EachElementSpawnSelector;
-import net.mrwooly357.medievalstuff.registry.MSRegistries;
+import net.mrwooly357.medievalstuff.registry.MSRegistryKeys;
 import net.mrwooly357.medievalstuff.util.MSUtil;
 
 public final class SpawnTables {
 
-    public static final RegistryKey<SpawnTable> TEST = create("test");
+    public static final RegistryKey<SpawnTable> TEST = of("test");
 
     private SpawnTables() {}
 
 
-    private static RegistryKey<SpawnTable> create(String id) {
-        return RegistryKey.of(MSRegistries.SPAWN_TABLE_KEY, MSUtil.id(id));
+    private static RegistryKey<SpawnTable> of(String id) {
+        return RegistryKey.of(MSRegistryKeys.SPAWN_TABLE, MSUtil.id(id));
     }
 
     public static void bootstrap(Registerable<SpawnTable> registerable) {

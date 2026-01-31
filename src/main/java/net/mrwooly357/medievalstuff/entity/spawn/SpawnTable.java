@@ -60,7 +60,7 @@ public final class SpawnTable {
         rules.forEach(context::check);
         functions.forEach(context::check);
         List<Entity> entities = new ArrayList<>();
-        selector.select(pools).forEach(pool -> entities.addAll(pool.generateEntities(context)));
+        selector.select(pools, context).forEach(pool -> entities.addAll(pool.generateEntities(context)));
 
         return List.copyOf(entities);
     }

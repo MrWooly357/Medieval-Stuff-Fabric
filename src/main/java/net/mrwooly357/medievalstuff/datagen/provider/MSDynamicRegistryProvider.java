@@ -2,10 +2,13 @@ package net.mrwooly357.medievalstuff.datagen.provider;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.mrwooly357.medievalstuff.enchantment.MSEnchantments;
 import net.mrwooly357.medievalstuff.entity.spawn.SpawnTable;
 import net.mrwooly357.medievalstuff.entity.spawn.SpawnTables;
-import net.mrwooly357.medievalstuff.registry.MSRegistries;
+import net.mrwooly357.medievalstuff.registry.MSRegistryKeys;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,12 +21,10 @@ public final class MSDynamicRegistryProvider extends FabricDynamicRegistryProvid
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
-        generateSpawnTables(registries, entries);
-    }
-
-    private static void generateSpawnTables(RegistryWrapper.WrapperLookup registries, Entries entries) {
-        RegistryWrapper.Impl<SpawnTable> registry = registries.getWrapperOrThrow(MSRegistries.SPAWN_TABLE_KEY);
-        entries.add(registry, SpawnTables.TEST);
+        RegistryWrapper.Impl<Enchantment> enchantmentRegistry = registries.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
+        entries.add(enchantmentRegistry, MSEnchantments.COMBO);
+        RegistryWrapper.Impl<SpawnTable> spawnTableRegistry = registries.getWrapperOrThrow(MSRegistryKeys.SPAWN_TABLE);
+        entries.add(spawnTableRegistry, SpawnTables.TEST);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.mrwooly357.medievalstuff.entity.spawn.selector;
 
 import com.mojang.serialization.Codec;
+import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public abstract class SpawnSelector {
 
     protected abstract SpawnSelectorType<? extends SpawnSelector> getType();
 
-    public abstract <SSDH extends SpawnSelectorDataHolder> List<SSDH> select(List<SSDH> objects);
+    public abstract <SSDH extends SpawnSelectorDataHolder> List<SSDH> select(List<SSDH> objects, SpawnContext context);
 
 
     public static abstract class Data {

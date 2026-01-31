@@ -7,6 +7,7 @@ import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContextAware;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContextParameter;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContextParameters;
 
+import java.util.List;
 import java.util.Set;
 
 public abstract class SpawnPosFinder implements SpawnContextAware {
@@ -18,7 +19,7 @@ public abstract class SpawnPosFinder implements SpawnContextAware {
 
     protected abstract SpawnPosFinderType<? extends SpawnPosFinder> getType();
 
-    public abstract Vec3d nextPos(SpawnContext context);
+    public abstract Vec3d nextPos(SpawnContext context, List<Vec3d> banned);
 
     public abstract int getMaxAttempts();
 

@@ -1,0 +1,29 @@
+{
+  "anvil_cost": 1,
+  "description": {
+    "translate": "enchantment.medievalstuff.combo"
+  },
+  "effects": {
+    "medievalstuff:damage": [
+      {
+        "effect": {
+          "type": "medievalstuff:increase_combo"
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 20,
+    "per_level_above_first": 10
+  },
+  "max_level": 5,
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 10
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#medievalstuff:melee_weapons",
+  "weight": 5
+}

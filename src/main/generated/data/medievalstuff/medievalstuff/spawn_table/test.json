@@ -23,9 +23,9 @@
           "ignore_vanilla_rules": true,
           "pos_finder": {
             "type": "medievalstuff:fixed",
-            "pos": [
+            "offset": [
               0.0,
-              2.5,
+              0.0,
               0.0
             ]
           },
@@ -56,9 +56,9 @@
           "ignore_vanilla_rules": true,
           "pos_finder": {
             "type": "medievalstuff:fixed",
-            "pos": [
+            "offset": [
               0.0,
-              2.5,
+              0.0,
               0.0
             ]
           },

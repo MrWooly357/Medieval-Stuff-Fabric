@@ -1,6 +1,7 @@
 package net.mrwooly357.medievalstuff.entity.spawn.selector.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelector;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelectorDataHolder;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelectorType;
@@ -22,7 +23,7 @@ public class EachElementSpawnSelector extends SpawnSelector {
     }
 
     @Override
-    public <SSDH extends SpawnSelectorDataHolder> List<SSDH> select(List<SSDH> objects) {
+    public <SSDH extends SpawnSelectorDataHolder> List<SSDH> select(List<SSDH> objects, SpawnContext context) {
         return objects;
     }
 
