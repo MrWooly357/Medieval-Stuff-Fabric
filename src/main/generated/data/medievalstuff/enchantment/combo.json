@@ -7,7 +7,7 @@
     "medievalstuff:damage": [
       {
         "effect": {
-          "type": "medievalstuff:increase_combo"
+          "type": "medievalstuff:increase_combo_and_damage"
         }
       }
     ]

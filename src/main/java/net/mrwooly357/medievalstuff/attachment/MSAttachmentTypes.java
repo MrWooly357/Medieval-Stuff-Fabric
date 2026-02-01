@@ -15,7 +15,7 @@ public final class MSAttachmentTypes {
             "weapon_user_data", builder -> builder
                     .initializer(() -> new WeaponUserData(0, 0))
                     .persistent(WeaponUserData.CODEC)
-                    .syncWith(WeaponUserData.PACKET_CODEC, AttachmentSyncPredicate.all())
+                    .syncWith(WeaponUserData.PACKET_CODEC, AttachmentSyncPredicate.targetOnly())
     );
 
     private MSAttachmentTypes() {}

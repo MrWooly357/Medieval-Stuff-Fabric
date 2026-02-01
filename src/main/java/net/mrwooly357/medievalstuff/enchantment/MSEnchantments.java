@@ -7,7 +7,7 @@ import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.mrwooly357.medievalstuff.enchantment.effects.custom.entity_damage.custom.IncreaseComboEnchantmentEffect;
+import net.mrwooly357.medievalstuff.enchantment.effects.custom.entity_damage.custom.IncreaseComboAndDamageEnchantmentEffect;
 import net.mrwooly357.medievalstuff.item.component.MSEnchantmentEffectComponentTypes;
 import net.mrwooly357.medievalstuff.util.MSUtil;
 import net.mrwooly357.medievalstuff.util.tag.MSItemTags;
@@ -40,7 +40,7 @@ public final class MSEnchantments {
                                 AttributeModifierSlot.MAINHAND
                         )
                 )
-                        .addEffect(MSEnchantmentEffectComponentTypes.DAMAGE, new IncreaseComboEnchantmentEffect())
+                        .addEffect(MSEnchantmentEffectComponentTypes.DAMAGE, IncreaseComboAndDamageEnchantmentEffect.INSTANCE)
         );
     }
 

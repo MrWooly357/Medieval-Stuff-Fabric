@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.mrwooly357.medievalstuff.registry.MSRegistries;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 public interface EnchantmentEntityDamageEffect {
@@ -17,5 +18,5 @@ public interface EnchantmentEntityDamageEffect {
 
     MapCodec<? extends EnchantmentEntityDamageEffect> getCodec();
 
-    float apply(ServerWorld world, int level, ItemStack stack, Entity user, float damage, DamageSource damageSource);
+    float apply(ServerWorld world, int level, ItemStack stack, Optional<Entity> attacker, Entity target, float damage, DamageSource damageSource);
 }

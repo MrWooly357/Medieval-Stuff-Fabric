@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Mixin(Enchantment.class)
@@ -24,11 +25,11 @@ public abstract class EnchantmentMixin {
 
 
     @Inject(method = "modifyDamage", at = @At("TAIL"))
-    private void modifyDamage(ServerWorld world, int level, ItemStack stack, Entity user, DamageSource damageSource, MutableFloat damage, CallbackInfo ci) {
+    private void modifyDamage(ServerWorld world, int level, ItemStack stack, Entity target, DamageSource damageSource, MutableFloat damage, CallbackInfo ci) {
         applyEffects(
                 getEffect(MSEnchantmentEffectComponentTypes.DAMAGE),
-                createEnchantedDamageLootContext(world, level, user, damageSource),
-                effect -> damage.setValue(effect.apply(world, level, stack, user, damage.getValue(), damageSource))
+                createEnchantedDamageLootContext(world, level, target, damageSource),
+                effect -> damage.setValue(effect.apply(world, level, stack, Optional.ofNullable(damageSource.getAttacker()), target, damage.getValue(), damageSource))
         );
     }
 
