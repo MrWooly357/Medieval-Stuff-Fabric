@@ -7,7 +7,11 @@
 	"authors": [
 		"MrWooly357"
 	],
-	"contact": {},
+	"contributors": [],
+	"contact": {
+		"homepage": "",
+		"issues": "https://github.com/MrWooly357/Medieval-Stuff-Fabric/issues"
+	},
 	"license": "MIT",
 	"icon": "assets/medievalstuff/icon.png",
 	"environment": "*",
