@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.mrwooly357.medievalstuff.attachment.custom.WeaponUserData;
+import net.mrwooly357.medievalstuff.attachment.custom.ComboData;
 import net.mrwooly357.medievalstuff.enchantment.effects.custom.entity_damage.EnchantmentEntityDamageEffect;
 import net.mrwooly357.medievalstuff.entity.custom.WeaponUser;
 
@@ -25,7 +25,7 @@ public record IncreaseComboAndDamageEnchantmentEffect() implements EnchantmentEn
     @Override
     public float apply(ServerWorld world, int level, ItemStack stack, Optional<Entity> attacker, Entity target, float damage, DamageSource damageSource) {
         if (attacker.isPresent() && attacker.orElseThrow() instanceof WeaponUser weaponUser) {
-            WeaponUserData data = weaponUser.getWeaponUserData();
+            ComboData data = weaponUser.getWeaponUserData();
             int combo = data.combo() + 1;
             weaponUser.setWeaponUserData(combo, level * 20);
 

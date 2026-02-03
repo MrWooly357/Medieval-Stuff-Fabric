@@ -116,7 +116,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate SpawnCondition! Duplicate: " + condition + ".");
+                throw new IllegalArgumentException("Duplicate spawn condition! Duplicate: " + condition + ".");
         }
 
         public Builder rule(SpawnRule rule) {
@@ -125,7 +125,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate SpawnRule! Duplicate: " + rule + ".");
+                throw new IllegalArgumentException("Duplicate spawn rule! Duplicate: " + rule + ".");
         }
 
         public Builder entry(SpawnEntry entry) {
@@ -134,7 +134,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate SpawnEntry! Duplicate: " + entry + ".");
+                throw new IllegalArgumentException("Duplicate spawn entry! Duplicate: " + entry + ".");
         }
 
         public Builder function(SpawnFunction function) {
@@ -143,7 +143,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate SpawnFunction! Duplicate: " + function + ".");
+                throw new IllegalArgumentException("Duplicate spawn function! Duplicate: " + function + ".");
         }
 
         public SpawnPool build(SpawnSelector.Data selectorData, SpawnSelector selector) {

@@ -52,6 +52,22 @@ public abstract class LeafSpawnEntry extends SpawnEntry {
                 ));
     }
 
+    protected SpawnPosFinder getPosFinder() {
+        return posFinder;
+    }
+
+    protected boolean shouldIgnoreVanillaRules() {
+        return ignoreVanillaRules;
+    }
+
+    protected List<SpawnRule> getRules() {
+        return rules;
+    }
+
+    protected List<SpawnFunction> getFunctions() {
+        return functions;
+    }
+
     @Override
     public void setCombinedRule(List<SpawnRule> poolRules, List<SpawnRule> tableRules) {
         List<SpawnRule> rules1 = new ArrayList<>();
@@ -121,4 +137,40 @@ public abstract class LeafSpawnEntry extends SpawnEntry {
     }
 
     protected abstract List<Entity> createEntities(SpawnContext context);
+
+
+    protected abstract static class Builder<B extends Builder<B>> extends SpawnEntry.Builder<B> {
+
+        protected boolean ignoreVanillaRules = false;
+        protected final List<SpawnRule> rules = new ArrayList<>();
+        protected final List<SpawnFunction> functions = new ArrayList<>();
+
+
+        public B ignoreVanillaSpawnRules() {
+            if (!ignoreVanillaRules) {
+                ignoreVanillaRules = true;
+
+                return getThisBuilder();
+            } else
+                throw new UnsupportedOperationException("Ignore vanilla rules is already set to true!");
+        }
+
+        public B rule(SpawnRule rule) {
+            if (!rules.contains(rule)) {
+                rules.add(rule);
+
+                return getThisBuilder();
+            } else
+                throw new IllegalArgumentException("Duplicate spawn rule! Duplicate: " + rule + ".");
+        }
+
+        public B function(SpawnFunction function) {
+            if (!functions.contains(function)) {
+                functions.add(function);
+
+                return getThisBuilder();
+            } else
+                throw new IllegalArgumentException("Duplicate spawn function! Duplicate: " + function + ".");
+        }
+    }
 }

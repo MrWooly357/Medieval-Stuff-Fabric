@@ -2,7 +2,7 @@ package net.mrwooly357.medievalstuff.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.mrwooly357.medievalstuff.attachment.MSAttachmentTypes;
-import net.mrwooly357.medievalstuff.attachment.custom.WeaponUserData;
+import net.mrwooly357.medievalstuff.attachment.custom.ComboData;
 import net.mrwooly357.medievalstuff.entity.custom.WeaponUser;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,12 +20,12 @@ public abstract class LivingEntityMixin implements WeaponUser {
     }
 
     @Override
-    public WeaponUserData getWeaponUserData() {
-        return ((LivingEntity) (Object) this).getAttachedOrCreate(MSAttachmentTypes.WEAPON_USER_DATA);
+    public ComboData getWeaponUserData() {
+        return ((LivingEntity) (Object) this).getAttachedOrCreate(MSAttachmentTypes.COMBO_DATA);
     }
 
     @Override
     public void setWeaponUserData(int combo, int remainingComboTicks) {
-        ((LivingEntity) (Object) this).setAttached(MSAttachmentTypes.WEAPON_USER_DATA, new WeaponUserData(combo, remainingComboTicks));
+        ((LivingEntity) (Object) this).setAttached(MSAttachmentTypes.COMBO_DATA, new ComboData(combo, remainingComboTicks));
     }
 }

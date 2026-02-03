@@ -1,12 +1,12 @@
 package net.mrwooly357.medievalstuff.entity.custom;
 
-import net.mrwooly357.medievalstuff.attachment.custom.WeaponUserData;
+import net.mrwooly357.medievalstuff.attachment.custom.ComboData;
 
 public interface WeaponUser {
 
 
     static void tick(WeaponUser user) {
-        WeaponUserData data = user.getWeaponUserData();
+        ComboData data = user.getWeaponUserData();
         int remainingComboTicks = data.remainingComboTicks();
 
         if (remainingComboTicks > 0) {
@@ -20,7 +20,7 @@ public interface WeaponUser {
         }
     }
 
-    WeaponUserData getWeaponUserData();
+    ComboData getWeaponUserData();
 
     void setWeaponUserData(int combo, int remainingComboTicks);
 }

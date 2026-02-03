@@ -51,11 +51,6 @@ public final class SpawnTable {
     }
 
     public List<Entity> generateEntities(SpawnContext context) {
-        SpawnContextType contextType1 = context.getType();
-
-        if (!contextType.equals(contextType1))
-            throw new IllegalArgumentException("Given spawn context type isn't allowed in this spawn table! Allowed: " + contextType + ", given: " + contextType1 + ".");
-
         conditions.forEach(context::check);
         rules.forEach(context::check);
         functions.forEach(context::check);
@@ -108,7 +103,7 @@ public final class SpawnTable {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate SpawnCondition! Duplicate: " + condition);
+                throw new IllegalArgumentException("Duplicate spawn condition! Duplicate: " + condition + ".");
         }
 
         public Builder rule(SpawnRule rule) {
@@ -117,7 +112,7 @@ public final class SpawnTable {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate SpawnRule! Duplicate: " + rule);
+                throw new IllegalArgumentException("Duplicate spawn rule! Duplicate: " + rule + ".");
         }
 
         public Builder pool(SpawnPool pool) {
@@ -126,7 +121,7 @@ public final class SpawnTable {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate SpawnPool! Duplicate: " + pool);
+                throw new IllegalArgumentException("Duplicate spawn pool! Duplicate: " + pool + ".");
         }
 
         public Builder function(SpawnFunction function) {
@@ -135,7 +130,7 @@ public final class SpawnTable {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate SpawnFunction! Duplicate: " + function);
+                throw new IllegalArgumentException("Duplicate spawn function! Duplicate: " + function + ".");
         }
 
         public SpawnTable build(SpawnContextType contextType, SpawnSelector selector) {

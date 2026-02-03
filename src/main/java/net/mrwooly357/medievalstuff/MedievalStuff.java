@@ -14,6 +14,7 @@ import net.mrwooly357.medievalstuff.entity.spawn.function.condition.SpawnFunctio
 import net.mrwooly357.medievalstuff.entity.spawn.pos_finder.SpawnPosFinderTypes;
 import net.mrwooly357.medievalstuff.entity.spawn.rule.SpawnRuleTypes;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelectorTypes;
+import net.mrwooly357.medievalstuff.item.MSItems;
 import net.mrwooly357.medievalstuff.item.component.MSEnchantmentEffectComponentTypes;
 import net.mrwooly357.medievalstuff.registry.MSRegistries;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ public final class MedievalStuff implements ModInitializer {
 	public void onInitialize() {
 		MSRegistries.initialize();
 		MSAttachmentTypes.initialize();
+		MSItems.initialize();
 		MSEnchantmentEntityDamageEffects.initialize();
 		MSEnchantmentEffectComponentTypes.initialize();
 		MSBlocks.initialize();

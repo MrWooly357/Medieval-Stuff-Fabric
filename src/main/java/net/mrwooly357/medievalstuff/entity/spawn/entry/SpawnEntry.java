@@ -21,7 +21,7 @@ public abstract class SpawnEntry implements SpawnSelectorDataHolder {
     protected static final Predicate<SpawnContext> DEFAULT_COMBINED_CONDITION = context -> true;
 
     protected final SpawnSelector.Data selectorData;
-    protected final List<SpawnCondition> conditions;
+    public final List<SpawnCondition> conditions;
     protected Predicate<SpawnContext> combinedCondition = null;
 
     protected SpawnEntry(SpawnSelector.Data selectorData, List<SpawnCondition> conditions) {
@@ -37,6 +37,14 @@ public abstract class SpawnEntry implements SpawnSelectorDataHolder {
                 SpawnSelector.Data.CODEC.fieldOf("selector_data").forGetter(entry -> entry.selectorData),
                 SpawnCondition.CODEC.listOf().optionalFieldOf("conditions", List.of()).forGetter(entry -> entry.conditions)
         );
+    }
+
+    protected SpawnSelector.Data getSelectorData() {
+        return selectorData;
+    }
+
+    protected List<SpawnCondition> getConditions() {
+        return conditions;
     }
 
     public void setCombinedCondition(List<SpawnCondition> poolConditions, List<SpawnCondition> tableConditions) {
@@ -57,9 +65,9 @@ public abstract class SpawnEntry implements SpawnSelectorDataHolder {
             combinedCondition = DEFAULT_COMBINED_CONDITION;
     }
 
-    public abstract void setCombinedRule(List<SpawnRule> poolRules, List<SpawnRule> tableRules);
+    public void setCombinedRule(List<SpawnRule> poolRules, List<SpawnRule> tableRules) {}
 
-    public abstract void setCombinedFunction(List<SpawnFunction> poolFunctions, List<SpawnFunction> tableFunctions);
+    public void setCombinedFunction(List<SpawnFunction> poolFunctions, List<SpawnFunction> tableFunctions) {}
 
     public final List<Entity> generateEntities(SpawnContext context) {
         conditions.forEach(context::check);
@@ -75,5 +83,25 @@ public abstract class SpawnEntry implements SpawnSelectorDataHolder {
     @Override
     public final SpawnSelector.Data getSpawnSelectorData() {
         return selectorData;
+    }
+
+
+    protected abstract static class Builder<B extends Builder<B>> {
+
+        protected final List<SpawnCondition> conditions = new ArrayList<>();
+
+        protected Builder() {}
+
+
+        public B condition(SpawnCondition condition) {
+            if (!conditions.contains(condition)) {
+                conditions.add(condition);
+
+                return getThisBuilder();
+            } else
+                throw new IllegalArgumentException("Duplicate spawn condition! Duplicate: " + condition + ".");
+        }
+
+        protected abstract B getThisBuilder();
     }
 }

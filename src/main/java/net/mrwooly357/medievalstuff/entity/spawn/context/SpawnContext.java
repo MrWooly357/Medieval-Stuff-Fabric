@@ -25,10 +25,6 @@ public final class SpawnContext {
         return new Builder();
     }
 
-    public SpawnContextType getType() {
-        return type;
-    }
-
     public ServerWorld getWorld() {
         return world;
     }
@@ -37,12 +33,10 @@ public final class SpawnContext {
         return registryLookup;
     }
 
-    public <A> A getRequired(SpawnContextParameter<A> parameter) {
-        return parameter.cast(parameters.get(parameter));
-    }
-
     public <A> Optional<A> get(SpawnContextParameter<A> parameter) {
-        return Optional.ofNullable(parameter.cast(parameters.get(parameter)));
+        Object object = parameters.get(parameter);
+
+        return object == null ? Optional.empty() : Optional.of(parameter.cast(object));
     }
 
     public void check(SpawnContextAware aware) {
@@ -82,7 +76,7 @@ public final class SpawnContext {
 
         public <A> Builder parameter(SpawnContextParameter<A> parameter, A value) {
             if (parameters.put(parameter, value) != null)
-                throw new IllegalArgumentException("SpawnContextParameter " + parameter.id + " already has a value! Duplicate: " + value + ".");
+                throw new IllegalArgumentException("Spawn context parameter " + parameter.id + " already has a value! Duplicate: " + value + ".");
 
             return this;
         }

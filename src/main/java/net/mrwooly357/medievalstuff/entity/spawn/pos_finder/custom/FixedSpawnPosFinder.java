@@ -42,7 +42,7 @@ public class FixedSpawnPosFinder extends SpawnPosFinder {
 
     @Override
     public Vec3d nextPos(SpawnContext context, List<Vec3d> banned) {
-        Vec3d pos = context.getRequired(SpawnContextParameters.ORIGIN).add(offset);
+        Vec3d pos = context.get(SpawnContextParameters.ORIGIN).orElseThrow().add(offset);
 
         return !banned.contains(pos) ? pos : Vec3d.ZERO;
     }

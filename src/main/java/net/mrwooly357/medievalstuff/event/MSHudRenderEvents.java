@@ -5,7 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
 import net.mrwooly357.medievalstuff.attachment.MSAttachmentTypes;
-import net.mrwooly357.medievalstuff.attachment.custom.WeaponUserData;
+import net.mrwooly357.medievalstuff.attachment.custom.ComboData;
 import net.mrwooly357.medievalstuff.util.NumberFormats;
 
 public final class MSHudRenderEvents {
@@ -20,7 +20,7 @@ public final class MSHudRenderEvents {
                 ClientPlayerEntity player = client.player;
 
                 if (player != null) {
-                    WeaponUserData weaponUserData = player.getAttached(MSAttachmentTypes.WEAPON_USER_DATA);
+                    ComboData weaponUserData = player.getAttached(MSAttachmentTypes.COMBO_DATA);
                     int combo = weaponUserData.combo();
                     int remainingComboTicks = weaponUserData.remainingComboTicks();
 

@@ -25,8 +25,8 @@ public final class SpawnContextType {
     void check(SpawnContext context) {
         for (SpawnContextParameter<?> parameter : requiredParameters)
 
-            if (context.getRequired(parameter) == null)
-                throw new IllegalArgumentException("Given SpawnContext doesn't contain required parameters for entity " + MSRegistries.SPAWN_CONTEXT_TYPE.getId(this) + "!");
+            if (context.get(parameter).isEmpty())
+                throw new IllegalArgumentException("Given spawn context doesn't contain required parameters for spawn context type " + MSRegistries.SPAWN_CONTEXT_TYPE.getId(this) + "!");
     }
 
 
