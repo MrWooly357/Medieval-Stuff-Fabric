@@ -8,7 +8,7 @@ public interface WeaponUser {
     static void tick(WeaponUser user) {
         ComboData data = user.getComboData();
         int remainingComboTicks = data.remainingComboTicks();
-        int ticksAfterPrevious = data.ticksAfterPrevious();
+        int ticksAfterPrevious = data.ticksAfterPreviousIncrease();
 
         if (remainingComboTicks > 0 || ticksAfterPrevious < Integer.MAX_VALUE) {
             remainingComboTicks--;
@@ -23,5 +23,5 @@ public interface WeaponUser {
 
     ComboData getComboData();
 
-    void setComboData(int combo, int ticksAfterPrevious, int remainingComboTicks);
+    void setComboData(int combo, int ticksAfterPreviousIncrease, int remainingComboTicks);
 }

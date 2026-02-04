@@ -9,19 +9,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public record ComboData(int combo, int ticksAfterPrevious, int remainingComboTicks) {
+public record ComboData(int combo, int ticksAfterPreviousIncrease, int remainingComboTicks) {
 
     public static final Codec<ComboData> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("combo", 0).forGetter(ComboData::combo),
-                    Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("ticks_after_previous", Integer.MAX_VALUE).forGetter(ComboData::ticksAfterPrevious),
+                    Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("ticks_after_previous_increase", Integer.MAX_VALUE).forGetter(ComboData::ticksAfterPreviousIncrease),
                     Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("remaining_combo_ticks", 0).forGetter(ComboData::remainingComboTicks)
             )
                     .apply(instance, ComboData::new)
     );
     public static final PacketCodec<PacketByteBuf, ComboData> PACKET_CODEC = PacketCodec.tuple(
             PacketCodecs.VAR_INT, ComboData::combo,
-            PacketCodecs.VAR_INT, ComboData::ticksAfterPrevious,
+            PacketCodecs.VAR_INT, ComboData::ticksAfterPreviousIncrease,
             PacketCodecs.VAR_INT, ComboData::remainingComboTicks,
             ComboData::new
     );
@@ -31,19 +31,19 @@ public record ComboData(int combo, int ticksAfterPrevious, int remainingComboTic
     public boolean equals(Object object) {
         return (this == object) || (object instanceof ComboData(int otherCombo, int otherTicksAfterPrevious, int otherRemainingComboTicks)
                 && combo == otherCombo
-                && ticksAfterPrevious == otherTicksAfterPrevious
+                && ticksAfterPreviousIncrease == otherTicksAfterPrevious
                 && remainingComboTicks == otherRemainingComboTicks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(combo, ticksAfterPrevious, remainingComboTicks);
+        return Objects.hash(combo, ticksAfterPreviousIncrease, remainingComboTicks);
     }
 
     @Override
     public @NotNull String toString() {
         return "ComboData[combo: " + combo
-                + ", ticks_after_previous: " + ticksAfterPrevious
+                + ", ticks_after_previous_increase: " + ticksAfterPreviousIncrease
                 + ", remaining_combo_ticks: " + remainingComboTicks + "]";
     }
 }

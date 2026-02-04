@@ -43,8 +43,8 @@ public abstract class LivingEntityMixin implements WeaponUser, AnimatedEntity {
     }
 
     @Override
-    public void setComboData(int combo, int ticksAfterPrevious, int remainingComboTicks) {
-        ((LivingEntity) (Object) this).setAttached(MSAttachmentTypes.COMBO_DATA, new ComboData(combo, ticksAfterPrevious, remainingComboTicks));
+    public void setComboData(int combo, int ticksAfterPreviousIncrease, int remainingComboTicks) {
+        ((LivingEntity) (Object) this).setAttached(MSAttachmentTypes.COMBO_DATA, new ComboData(combo, ticksAfterPreviousIncrease, remainingComboTicks));
     }
 
     @Override

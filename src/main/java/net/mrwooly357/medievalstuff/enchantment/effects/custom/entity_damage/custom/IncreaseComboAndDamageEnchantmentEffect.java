@@ -30,15 +30,18 @@ public record IncreaseComboAndDamageEnchantmentEffect() implements EnchantmentEn
                 && (!(target instanceof LivingEntity living) || !living.isBlocking())
                 && (!(target instanceof ServerPlayerEntity player) || !player.isInCreativeMode())) {
             ComboData data = weaponUser.getComboData();
+            int ticksAfterPreviousIncrease = data.ticksAfterPreviousIncrease();
+            int combo = data.combo();
+            boolean increase = false;
 
-            if (data.ticksAfterPrevious() > 20) {
-                int combo = data.combo() + 1;
-                weaponUser.setComboData(combo, 0, level * 20);
+            if (ticksAfterPreviousIncrease > 10) {
+                combo++;
+                increase = true;
+            }
 
-                return combo > 1 ? damage + damage * combo * level / 100.0F : damage;
-            } else
-                return damage;
+            weaponUser.setComboData(combo, increase ? 0 : ticksAfterPreviousIncrease, level * 20);
 
+            return combo > 1 ? damage + damage * combo * level / 100.0F : damage;
         } else
             return damage;
     }
