@@ -26,15 +26,13 @@ public record IncreaseComboAndDamageEnchantmentEffect() implements EnchantmentEn
 
     @Override
     public float apply(ServerWorld world, int level, ItemStack stack, Optional<Entity> attacker, Entity target, float damage, DamageSource damageSource) {
-        if (attacker.isPresent() && attacker.orElseThrow() instanceof WeaponUser weaponUser
-                && (!(target instanceof LivingEntity living) || !living.isBlocking())
-                && (!(target instanceof ServerPlayerEntity player) || !player.isInCreativeMode())) {
+        if (attacker.isPresent() && attacker.orElseThrow() instanceof WeaponUser weaponUser) {
             ComboData data = weaponUser.getComboData();
             int ticksAfterPreviousIncrease = data.ticksAfterPreviousIncrease();
             int combo = data.combo();
             boolean increase = false;
 
-            if (ticksAfterPreviousIncrease > 10) {
+            if (ticksAfterPreviousIncrease > 10 && (!(target instanceof LivingEntity living) || !living.isBlocking()) && (!(target instanceof ServerPlayerEntity player) || !player.isInCreativeMode())) {
                 combo++;
                 increase = true;
             }
