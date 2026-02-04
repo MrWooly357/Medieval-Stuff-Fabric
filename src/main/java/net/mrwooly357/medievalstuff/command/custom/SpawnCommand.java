@@ -16,7 +16,7 @@ import net.mrwooly357.medievalstuff.registry.MSRegistryKeys;
 
 public final class SpawnCommand {
 
-    public static final DynamicCommandExceptionType INVALID_KEY_EXCEPTION = new DynamicCommandExceptionType(
+    private static final DynamicCommandExceptionType INVALID_KEY_EXCEPTION = new DynamicCommandExceptionType(
             key -> Text.stringifiedTranslatable("command.medievalstuff.spawn.invalid_key", key)
     );
 

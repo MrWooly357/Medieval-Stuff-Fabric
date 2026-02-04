@@ -3,9 +3,12 @@ package net.mrwooly357.medievalstuff.attachment;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 import net.mrwooly357.medievalstuff.MedievalStuff;
 import net.mrwooly357.medievalstuff.attachment.custom.AttackData;
 import net.mrwooly357.medievalstuff.attachment.custom.ComboData;
+import net.mrwooly357.medievalstuff.registry.MSRegistries;
 import net.mrwooly357.medievalstuff.util.MSUtil;
 
 import java.util.function.Consumer;
@@ -29,7 +32,9 @@ public final class MSAttachmentTypes {
 
 
     private static <A> AttachmentType<A> register(String id, Consumer<AttachmentRegistry.Builder<A>> builder) {
-        return AttachmentRegistry.create(MSUtil.id(id), builder);
+        Identifier id1 = MSUtil.id(id);
+
+        return Registry.register(MSRegistries.ATTACHMENT_TYPE, id1, AttachmentRegistry.create(id1, builder));
     }
 
     public static void initialize() {

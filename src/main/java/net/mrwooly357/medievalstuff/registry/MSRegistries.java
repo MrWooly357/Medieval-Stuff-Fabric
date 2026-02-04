@@ -1,6 +1,7 @@
 package net.mrwooly357.medievalstuff.registry;
 
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.registry.Registry;
@@ -22,20 +23,21 @@ import java.util.List;
 public final class MSRegistries {
 
     static final List<Runnable> DYNAMIC_REGISTRY_INITIALIZERS = new ArrayList<>();
-    public static final Registry<MapCodec<? extends EnchantmentEntityDamageEffect>> ENCHANTMENT_ENTITY_DAMAGE_EFFECT_TYPE = create(MSRegistryKeys.ENCHANTMENT_ENTITY_DAMAGE_EFFECT_TYPE);
-    public static final Registry<SpawnContextType> SPAWN_CONTEXT_TYPE = create(MSRegistryKeys.SPAWN_CONTEXT_TYPE);
-    public static final Registry<SpawnSelectorType<?>> SPAWN_SELECTOR_TYPE = create(MSRegistryKeys.SPAWN_SELECTOR_TYPE);
-    public static final Registry<SpawnConditionType<?>> SPAWN_CONDITION_TYPE = create(MSRegistryKeys.SPAWN_CONDITION_TYPE);
-    public static final Registry<SpawnPosFinderType<?>> SPAWN_POS_FINDER_TYPE = create(MSRegistryKeys.SPAWN_POS_FINDER_TYPE);
-    public static final Registry<SpawnRuleType<?>> SPAWN_RULE_TYPE = create(MSRegistryKeys.SPAWN_RULE_TYPE);
-    public static final Registry<SpawnFunctionConditionType<?>> SPAWN_FUNCTION_CONDITION_TYPE = create(MSRegistryKeys.SPAWN_FUNCTION_CONDITION_TYPE);
-    public static final Registry<SpawnFunctionType<?>> SPAWN_FUNCTION_TYPE = create(MSRegistryKeys.SPAWN_FUNCTION_TYPE);
-    public static final Registry<SpawnEntryType<?>> SPAWN_ENTRY_TYPE = create(MSRegistryKeys.SPAWN_ENTRY_TYPE);
+    public static final Registry<AttachmentType<?>> ATTACHMENT_TYPE = of(MSRegistryKeys.ATTACHMENT_TYPE);
+    public static final Registry<MapCodec<? extends EnchantmentEntityDamageEffect>> ENCHANTMENT_ENTITY_DAMAGE_EFFECT_TYPE = of(MSRegistryKeys.ENCHANTMENT_ENTITY_DAMAGE_EFFECT_TYPE);
+    public static final Registry<SpawnContextType> SPAWN_CONTEXT_TYPE = of(MSRegistryKeys.SPAWN_CONTEXT_TYPE);
+    public static final Registry<SpawnSelectorType<?>> SPAWN_SELECTOR_TYPE = of(MSRegistryKeys.SPAWN_SELECTOR_TYPE);
+    public static final Registry<SpawnConditionType<?>> SPAWN_CONDITION_TYPE = of(MSRegistryKeys.SPAWN_CONDITION_TYPE);
+    public static final Registry<SpawnPosFinderType<?>> SPAWN_POS_FINDER_TYPE = of(MSRegistryKeys.SPAWN_POS_FINDER_TYPE);
+    public static final Registry<SpawnRuleType<?>> SPAWN_RULE_TYPE = of(MSRegistryKeys.SPAWN_RULE_TYPE);
+    public static final Registry<SpawnFunctionConditionType<?>> SPAWN_FUNCTION_CONDITION_TYPE = of(MSRegistryKeys.SPAWN_FUNCTION_CONDITION_TYPE);
+    public static final Registry<SpawnFunctionType<?>> SPAWN_FUNCTION_TYPE = of(MSRegistryKeys.SPAWN_FUNCTION_TYPE);
+    public static final Registry<SpawnEntryType<?>> SPAWN_ENTRY_TYPE = of(MSRegistryKeys.SPAWN_ENTRY_TYPE);
 
     private MSRegistries() {}
 
 
-    private static <A> Registry<A> create(RegistryKey<Registry<A>> key) {
+    private static <A> Registry<A> of(RegistryKey<Registry<A>> key) {
         return FabricRegistryBuilder.createSimple(key)
                 .attribute(RegistryAttribute.SYNCED)
                 .buildAndRegister();

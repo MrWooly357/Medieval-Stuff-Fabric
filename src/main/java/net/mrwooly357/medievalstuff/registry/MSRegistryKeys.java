@@ -2,6 +2,7 @@ package net.mrwooly357.medievalstuff.registry;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -21,9 +22,7 @@ import java.util.function.Supplier;
 
 public final class MSRegistryKeys {
 
-    public static final RegistryKey<Registry<SpawnTable>> SPAWN_TABLE = dynamicOf(
-            "spawn_table", () -> SpawnTable.CODEC
-    );
+    public static final RegistryKey<Registry<AttachmentType<?>>> ATTACHMENT_TYPE = of("attachment_type");
     public static final RegistryKey<Registry<MapCodec<? extends EnchantmentEntityDamageEffect>>> ENCHANTMENT_ENTITY_DAMAGE_EFFECT_TYPE = of("enchantment_entity_damage_effect_type");
     public static final RegistryKey<Registry<SpawnContextType>> SPAWN_CONTEXT_TYPE = of("spawn_context_type");
     public static final RegistryKey<Registry<SpawnSelectorType<?>>> SPAWN_SELECTOR_TYPE = of("spawn_selector_type");
@@ -33,6 +32,9 @@ public final class MSRegistryKeys {
     public static final RegistryKey<Registry<SpawnFunctionConditionType<?>>> SPAWN_FUNCTION_CONDITION_TYPE = of("spawn_function_condition_type");
     public static final RegistryKey<Registry<SpawnFunctionType<?>>> SPAWN_FUNCTION_TYPE = of("spawn_function_type");
     public static final RegistryKey<Registry<SpawnEntryType<?>>> SPAWN_ENTRY_TYPE = of("spawn_entry_type");
+    public static final RegistryKey<Registry<SpawnTable>> SPAWN_TABLE = dynamicOf(
+            "spawn_table", () -> SpawnTable.CODEC
+    );
 
     private MSRegistryKeys() {}
 
