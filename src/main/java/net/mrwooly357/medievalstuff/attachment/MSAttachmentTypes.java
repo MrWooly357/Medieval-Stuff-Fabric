@@ -20,7 +20,7 @@ public final class MSAttachmentTypes {
     );
     public static final AttachmentType<ComboData> COMBO_DATA = register(
             "combo_data", builder -> builder
-                    .initializer(() -> new ComboData(0, 0))
+                    .initializer(() -> new ComboData(0, Integer.MAX_VALUE, 0))
                     .persistent(ComboData.CODEC)
                     .syncWith(ComboData.PACKET_CODEC, AttachmentSyncPredicate.targetOnly())
     );

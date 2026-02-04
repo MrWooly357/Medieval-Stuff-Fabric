@@ -6,21 +6,22 @@ public interface WeaponUser {
 
 
     static void tick(WeaponUser user) {
-        ComboData data = user.getWeaponUserData();
+        ComboData data = user.getComboData();
         int remainingComboTicks = data.remainingComboTicks();
+        int ticksAfterPrevious = data.ticksAfterPrevious();
 
-        if (remainingComboTicks > 0) {
+        if (remainingComboTicks > 0 || ticksAfterPrevious < Integer.MAX_VALUE) {
             remainingComboTicks--;
             int combo = data.combo();
 
             if (remainingComboTicks == 0)
                 combo = 0;
 
-            user.setWeaponUserData(combo, remainingComboTicks);
+            user.setComboData(combo, ticksAfterPrevious + 1, remainingComboTicks);
         }
     }
 
-    ComboData getWeaponUserData();
+    ComboData getComboData();
 
-    void setWeaponUserData(int combo, int remainingComboTicks);
+    void setComboData(int combo, int ticksAfterPrevious, int remainingComboTicks);
 }

@@ -6,6 +6,9 @@
     "EnchantmentMixin",
     "LivingEntityMixin"
   ],
+  "client": [
+    "BipedEntityModelMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

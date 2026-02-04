@@ -20,7 +20,7 @@ public final class MSHudRenderEvents {
                 ClientPlayerEntity player = client.player;
 
                 if (player != null) {
-                    ComboData weaponUserData = player.getAttached(MSAttachmentTypes.COMBO_DATA);
+                    ComboData weaponUserData = player.getAttachedOrCreate(MSAttachmentTypes.COMBO_DATA);
                     int combo = weaponUserData.combo();
                     int remainingComboTicks = weaponUserData.remainingComboTicks();
 
