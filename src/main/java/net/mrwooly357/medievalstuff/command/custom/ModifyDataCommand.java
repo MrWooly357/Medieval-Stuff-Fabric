@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.NbtCompoundArgumentType;
 import net.minecraft.command.argument.RegistryKeyArgumentType;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -32,7 +33,7 @@ public final class ModifyDataCommand {
         dispatcher.register(
                 CommandManager.literal("modify_data")
                         .then(
-                                CommandManager.argument("player", EntityArgumentType.player())
+                                CommandManager.argument("target", EntityArgumentType.entity())
                                         .then(
                                                 CommandManager.argument("type", RegistryKeyArgumentType.registryKey(MSRegistryKeys.ATTACHMENT_TYPE))
                                                         .then(
@@ -44,7 +45,7 @@ public final class ModifyDataCommand {
                                                                                             Codec<?> codec = type.persistenceCodec();
 
                                                                                             if (codec != null) {
-                                                                                                context.getSource().getPlayer().setAttached(type, codec.decode(NbtOps.INSTANCE, NbtCompoundArgumentType.getNbtCompound(context, "data")).result().orElseThrow().getFirst());
+                                                                                                getTarget(context).setAttached(type, codec.decode(NbtOps.INSTANCE, NbtCompoundArgumentType.getNbtCompound(context, "data")).result().orElseThrow().getFirst());
 
                                                                                                 return Command.SINGLE_SUCCESS;
                                                                                             } else
@@ -59,7 +60,7 @@ public final class ModifyDataCommand {
                                                                             Supplier<?> initializer = type.initializer();
 
                                                                             if (initializer != null) {
-                                                                                context.getSource().getPlayer().setAttached(type, initializer.get());
+                                                                                getTarget(context).setAttached(type, initializer.get());
 
                                                                                 return Command.SINGLE_SUCCESS;
                                                                             } else
@@ -69,6 +70,10 @@ public final class ModifyDataCommand {
                                         )
                         )
         );
+    }
+
+    private static Entity getTarget(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        return EntityArgumentType.getPlayer(context, "target");
     }
 
     @SuppressWarnings("unchecked")
