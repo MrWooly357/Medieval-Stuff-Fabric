@@ -21,7 +21,7 @@ public final class SpawnPosFinderTypes {
 
 
     private static <SPF extends SpawnPosFinder> SpawnPosFinderType<SPF> register(String id, MapCodec<SPF> codec) {
-        return Registry.register(MSRegistries.SPAWN_POS_FINDER_TYPE, MSUtil.id(id), SpawnPosFinderType.of(codec));
+        return Registry.register(MSRegistries.SPAWN_POS_FINDER_TYPE, MSUtil.id(id), new SpawnPosFinderType<>(codec));
     }
 
     public static void initialize() {

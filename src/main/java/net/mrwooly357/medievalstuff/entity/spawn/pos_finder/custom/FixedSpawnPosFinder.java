@@ -11,7 +11,7 @@ import net.mrwooly357.medievalstuff.entity.spawn.pos_finder.SpawnPosFinderTypes;
 
 import java.util.List;
 
-public class FixedSpawnPosFinder extends SpawnPosFinder {
+public final class FixedSpawnPosFinder extends SpawnPosFinder {
 
     public static final MapCodec<FixedSpawnPosFinder> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
@@ -20,9 +20,9 @@ public class FixedSpawnPosFinder extends SpawnPosFinder {
                     .apply(instance, FixedSpawnPosFinder::new)
     );
 
-    protected final Vec3d offset;
+    private final Vec3d offset;
 
-    protected FixedSpawnPosFinder(Vec3d offset) {
+    private FixedSpawnPosFinder(Vec3d offset) {
         this.offset = offset;
     }
 

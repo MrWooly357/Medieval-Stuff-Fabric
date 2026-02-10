@@ -1,8 +1,12 @@
 package net.mrwooly357.medievalstuff.entity.spawn;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.server.world.ServerWorld;
 import net.mrwooly357.medievalstuff.entity.spawn.condition.SpawnCondition;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContextType;
@@ -22,7 +26,7 @@ public final class SpawnTable {
                     SpawnSelector.CODEC.fieldOf("selector").forGetter(table -> table.selector),
                     SpawnCondition.CODEC.listOf().optionalFieldOf("conditions", List.of()).forGetter(table -> table.conditions),
                     SpawnRule.CODEC.listOf().optionalFieldOf("rules", List.of()).forGetter(table -> table.rules),
-                    SpawnPool.CODEC.listOf(1, Integer.MAX_VALUE).fieldOf("pools").forGetter(table -> table.pools),
+                    SpawnPool.CODEC.listOf().optionalFieldOf("pools", List.of()).forGetter(table -> table.pools),
                     SpawnFunction.CODEC.listOf().optionalFieldOf("functions", List.of()).forGetter(table -> table.functions)
             )
                     .apply(instance, SpawnTable::new)
@@ -34,6 +38,7 @@ public final class SpawnTable {
     private final List<SpawnRule> rules;
     private final List<SpawnPool> pools;
     private final List<SpawnFunction> functions;
+    private List<EntityType<?>> entities;
 
     private SpawnTable(SpawnContextType contextType, SpawnSelector selector, List<SpawnCondition> conditions, List<SpawnRule> rules, List<SpawnPool> pools, List<SpawnFunction> functions) {
         this.contextType = contextType;
@@ -42,7 +47,6 @@ public final class SpawnTable {
         this.rules = rules;
         this.pools = pools;
         this.functions = functions;
-        this.pools.forEach(pool -> pool.setEntryCombinedData(conditions, rules, functions));
     }
 
 
@@ -50,11 +54,24 @@ public final class SpawnTable {
         return new Builder();
     }
 
-    public List<Entity> generateEntities(SpawnContext context) {
+    public List<EntityType<?>> getEntities(ServerWorld world) {
+        if (entities == null) {
+            List<EntityType<?>> types1 = new ArrayList<>();
+            pools.forEach(pool -> {
+                pool.setEntryCombinedData(conditions, rules, functions);
+                types1.addAll(pool.getEntities(world));
+            });
+            entities = List.copyOf(types1);
+        }
+
+        return entities;
+    }
+
+    public List<Pair<Entity, SpawnReason>> generateEntities(SpawnContext context) {
         conditions.forEach(context::check);
         rules.forEach(context::check);
         functions.forEach(context::check);
-        List<Entity> entities = new ArrayList<>();
+        List<Pair<Entity, SpawnReason>> entities = new ArrayList<>();
         selector.select(pools, context).forEach(pool -> entities.addAll(pool.generateEntities(context)));
 
         return List.copyOf(entities);
@@ -103,7 +120,7 @@ public final class SpawnTable {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate spawn condition! Duplicate: " + condition + ".");
+                throw new IllegalArgumentException("Duplicate spawn condition " + condition + ".");
         }
 
         public Builder rule(SpawnRule rule) {
@@ -112,7 +129,7 @@ public final class SpawnTable {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate spawn rule! Duplicate: " + rule + ".");
+                throw new IllegalArgumentException("Duplicate spawn rule " + rule + ".");
         }
 
         public Builder pool(SpawnPool pool) {
@@ -121,7 +138,7 @@ public final class SpawnTable {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate spawn pool! Duplicate: " + pool + ".");
+                throw new IllegalArgumentException("Duplicate spawn pool " + pool + ".");
         }
 
         public Builder function(SpawnFunction function) {
@@ -130,7 +147,7 @@ public final class SpawnTable {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate spawn function! Duplicate: " + function + ".");
+                throw new IllegalArgumentException("Duplicate spawn function " + function + ".");
         }
 
         public SpawnTable build(SpawnContextType contextType, SpawnSelector selector) {

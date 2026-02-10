@@ -8,7 +8,9 @@ public interface AnimatedEntity {
 
     boolean isAnimationPlaying(Animation animation);
 
-    void startPlayingAnimation(Animation animation, float speedMultiplier);
+    void startAnimation(Animation animation, float speedMultiplier);
+
+    void stopAnimation(Animation animation);
 
     void updateAnimations(float progress, AnimatedEntityModel model);
 }

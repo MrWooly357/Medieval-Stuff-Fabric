@@ -15,7 +15,7 @@ import net.mrwooly357.medievalstuff.util.FastFloatWeightedSelector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeightedSpawnSelector extends SpawnSelector {
+public final class WeightedSpawnSelector extends SpawnSelector {
 
     public static final MapCodec<WeightedSpawnSelector> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
@@ -24,9 +24,9 @@ public class WeightedSpawnSelector extends SpawnSelector {
                     .apply(instance, WeightedSpawnSelector::new)
     );
 
-    protected final IntProvider count;
+    private final IntProvider count;
 
-    protected WeightedSpawnSelector(IntProvider count) {
+    private WeightedSpawnSelector(IntProvider count) {
         this.count = count;
     }
 
@@ -51,7 +51,7 @@ public class WeightedSpawnSelector extends SpawnSelector {
     }
 
 
-    public static class Data extends SpawnSelector.Data {
+    public static final class Data extends SpawnSelector.Data {
 
         public static final MapCodec<Data> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
@@ -60,9 +60,9 @@ public class WeightedSpawnSelector extends SpawnSelector {
                         .apply(instance, Data::new)
         );
 
-        protected final FloatProvider weight;
+        private final FloatProvider weight;
 
-        protected Data(FloatProvider rolls) {
+        private Data(FloatProvider rolls) {
             this.weight = rolls;
         }
 

@@ -12,7 +12,7 @@ import java.util.Set;
 
 public abstract class SpawnPosFinder implements SpawnContextAware {
 
-    public static final Codec<SpawnPosFinder> CODEC = SpawnPosFinderType.CODEC.dispatch(SpawnPosFinder::getType, type -> type.codec);
+    public static final Codec<SpawnPosFinder> CODEC = SpawnPosFinderType.CODEC.dispatch(SpawnPosFinder::getType, SpawnPosFinderType::codec);
 
     protected SpawnPosFinder() {}
 

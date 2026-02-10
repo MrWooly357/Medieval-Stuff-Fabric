@@ -1,10 +1,12 @@
 package net.mrwooly357.medievalstuff.entity.spawn.entry.custom;
 
-import com.mojang.datafixers.Products;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.mrwooly357.medievalstuff.entity.spawn.condition.SpawnCondition;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
@@ -13,26 +15,34 @@ import net.mrwooly357.medievalstuff.entity.spawn.function.SpawnFunction;
 import net.mrwooly357.medievalstuff.entity.spawn.pos_finder.SpawnPosFinder;
 import net.mrwooly357.medievalstuff.entity.spawn.rule.SpawnRule;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelector;
-import net.mrwooly357.medievalstuff.util.TriPredicate;
+import net.mrwooly357.medievalstuff.util.TetraPredicate;
+import net.mrwooly357.medievalstuff.util.TriFunction;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
 
 public abstract class LeafSpawnEntry extends SpawnEntry {
 
-    protected static TriPredicate<Vec3d, Entity, SpawnContext> DEFAULT_COMBINED_RULE = (vec3d, entity, context) -> true;
-    protected static BiFunction<Entity, SpawnContext, Entity> DEFAULT_COMBINED_FUNCTION = (entity, context) -> entity;
+    protected static TetraPredicate<Vec3d, Entity, SpawnContext, SpawnReason> DEFAULT_COMBINED_RULE = (vec3d, entity, context, reason) -> true;
+    protected static TriFunction<Entity, SpawnContext, SpawnReason, Pair<Entity, SpawnReason>> DEFAULT_COMBINED_FUNCTION = (entity, context, reason) -> Pair.of(entity, reason);
 
     protected final SpawnPosFinder posFinder;
     protected final boolean ignoreVanillaRules;
     protected final List<SpawnRule> rules;
-    protected TriPredicate<Vec3d, Entity, SpawnContext> combinedRule = null;
+    protected TetraPredicate<Vec3d, Entity, SpawnContext, SpawnReason> combinedRule = null;
     protected final List<SpawnFunction> functions;
-    protected BiFunction<Entity, SpawnContext, Entity> combinedFunction = null;
+    protected TriFunction<Entity, SpawnContext, SpawnReason, Pair<Entity, SpawnReason>> combinedFunction = null;
 
-    protected LeafSpawnEntry(SpawnSelector.Data selectorData, List<SpawnCondition> conditions, SpawnPosFinder posFinder, boolean ignoreVanillaRules, List<SpawnRule> rules, List<SpawnFunction> functions) {
-        super(selectorData, conditions);
+    protected LeafSpawnEntry(
+            SpawnSelector.Data selectorData,
+            List<SpawnCondition> conditions,
+            SpawnReason reason,
+            SpawnPosFinder posFinder,
+            boolean ignoreVanillaRules,
+            List<SpawnRule> rules,
+            List<SpawnFunction> functions
+    ) {
+        super(selectorData, conditions, reason);
 
         this.posFinder = posFinder;
         this.ignoreVanillaRules = ignoreVanillaRules;
@@ -40,33 +50,6 @@ public abstract class LeafSpawnEntry extends SpawnEntry {
         this.functions = functions;
     }
 
-
-    protected static <E extends LeafSpawnEntry> Products.P6<RecordCodecBuilder.Mu<E>, SpawnSelector.Data, List<SpawnCondition>,
-            SpawnPosFinder, Boolean, List<SpawnRule>, List<SpawnFunction>> addLeafFields(RecordCodecBuilder.Instance<E> instance) {
-        return addDefaultFields(instance)
-                .and(instance.group(
-                        SpawnPosFinder.CODEC.fieldOf("pos_finder").forGetter(entry -> entry.posFinder),
-                        Codec.BOOL.optionalFieldOf("ignore_vanilla_rules", false).forGetter(entry -> entry.ignoreVanillaRules),
-                        SpawnRule.CODEC.listOf().optionalFieldOf("rules", List.of()).forGetter(entry -> entry.rules),
-                        SpawnFunction.CODEC.listOf().optionalFieldOf("functions", List.of()).forGetter(entry -> entry.functions)
-                ));
-    }
-
-    protected SpawnPosFinder getPosFinder() {
-        return posFinder;
-    }
-
-    protected boolean shouldIgnoreVanillaRules() {
-        return ignoreVanillaRules;
-    }
-
-    protected List<SpawnRule> getRules() {
-        return rules;
-    }
-
-    protected List<SpawnFunction> getFunctions() {
-        return functions;
-    }
 
     @Override
     public void setCombinedRule(List<SpawnRule> poolRules, List<SpawnRule> tableRules) {
@@ -107,36 +90,38 @@ public abstract class LeafSpawnEntry extends SpawnEntry {
     }
 
     @Override
-    public List<Entity> tryGenerateEntities(SpawnContext context) {
+    public List<Pair<Entity, SpawnReason>> tryGenerateEntities(SpawnContext context) {
         rules.forEach(context::check);
         functions.forEach(context::check);
-        List<Entity> entities = new ArrayList<>();
-        createEntities(context).forEach(entity -> {
+        List<Pair<Entity, SpawnReason>> entities = new ArrayList<>();
+        createEntities(context).forEach(pair -> {
+            Entity entity = pair.getFirst();
+            SpawnReason reason1 = pair.getSecond();
+            ServerWorld world = context.getWorld();
             List<Vec3d> banned = new ArrayList<>();
             Vec3d pos = posFinder.nextPos(context, banned);
             int attempt = 1;
             int maxAttempts = posFinder.getMaxAttempts();
 
-            while (!combinedRule.test(pos, entity, context) && attempt < maxAttempts) {
+            while (!combinedRule.test(pos, entity, context, reason) && attempt < maxAttempts) {
                 banned.add(pos);
                 pos = posFinder.nextPos(context, banned);
                 attempt++;
             }
 
-            if (combinedRule.test(pos, entity, context)) {
+            if (combinedRule.test(pos, entity, context, reason) && (!ignoreVanillaRules ||
+                    (SpawnRestriction.canSpawn(entity.getType(), world, reason1, BlockPos.ofFloored(pos), world.getRandom()) && (!(entity instanceof MobEntity mob) || mob.canSpawn(world))))) {
                 entity.refreshPositionAndAngles(pos, 0.0F, 0.0F);
-
-                if (ignoreVanillaRules || (entity instanceof MobEntity mob && mob.canSpawn(context.getWorld())))
-                    entities.add(entity);
+                entities.add(pair);
             }
         });
-        List<Entity> processed = new ArrayList<>();
-        entities.forEach(entity -> processed.add(combinedFunction.apply(entity, context)));
+        List<Pair<Entity, SpawnReason>> processed = new ArrayList<>();
+        entities.forEach(pair -> processed.add(combinedFunction.apply(pair.getFirst(), context, reason)));
 
         return List.copyOf(processed);
     }
 
-    protected abstract List<Entity> createEntities(SpawnContext context);
+    protected abstract List<Pair<Entity, SpawnReason>> createEntities(SpawnContext context);
 
 
     protected abstract static class Builder<B extends Builder<B>> extends SpawnEntry.Builder<B> {

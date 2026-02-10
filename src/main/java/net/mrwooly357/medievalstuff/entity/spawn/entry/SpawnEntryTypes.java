@@ -29,7 +29,7 @@ public final class SpawnEntryTypes {
 
 
     private static <SE extends SpawnEntry> SpawnEntryType<SE> register(String id, MapCodec<SE> codec) {
-        return Registry.register(MSRegistries.SPAWN_ENTRY_TYPE, MSUtil.id(id), SpawnEntryType.of(codec));
+        return Registry.register(MSRegistries.SPAWN_ENTRY_TYPE, MSUtil.id(id), new SpawnEntryType<>(codec));
     }
 
     public static void initialize() {

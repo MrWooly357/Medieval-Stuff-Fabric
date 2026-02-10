@@ -2,13 +2,14 @@ package net.mrwooly357.medievalstuff.entity.spawn.function.condition;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SpawnReason;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContextAware;
+import net.mrwooly357.medievalstuff.util.TriPredicate;
 
 import java.util.List;
-import java.util.function.BiPredicate;
 
-public abstract class SpawnFunctionCondition implements SpawnContextAware, BiPredicate<Entity, SpawnContext> {
+public abstract class SpawnFunctionCondition implements SpawnContextAware, TriPredicate<Entity, SpawnContext, SpawnReason> {
 
     public static final Codec<SpawnFunctionCondition> CODEC = SpawnFunctionConditionType.CODEC.dispatch(SpawnFunctionCondition::getType, type -> type.codec);
 
@@ -17,8 +18,8 @@ public abstract class SpawnFunctionCondition implements SpawnContextAware, BiPre
 
     protected abstract SpawnFunctionConditionType<? extends SpawnFunctionCondition> getType();
 
-    public static BiPredicate<Entity, SpawnContext> combine(List<SpawnFunctionCondition> conditions) {
-        BiPredicate<Entity, SpawnContext> condition = conditions.getFirst();
+    public static TriPredicate<Entity, SpawnContext, SpawnReason> combine(List<SpawnFunctionCondition> conditions) {
+        TriPredicate<Entity, SpawnContext, SpawnReason> condition = conditions.getFirst();
         int size = conditions.size();
 
         for (int i = 1; i < size; i++)

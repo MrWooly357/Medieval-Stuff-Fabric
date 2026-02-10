@@ -25,7 +25,7 @@ public final class SpawnFunctionTypes {
 
 
     private static <SF extends SpawnFunction> SpawnFunctionType<SF> of(String id, MapCodec<SF> codec) {
-        return Registry.register(MSRegistries.SPAWN_FUNCTION_TYPE, MSUtil.id(id), SpawnFunctionType.of(codec));
+        return Registry.register(MSRegistries.SPAWN_FUNCTION_TYPE, MSUtil.id(id), new SpawnFunctionType<>(codec));
     }
 
     public static void initialize() {

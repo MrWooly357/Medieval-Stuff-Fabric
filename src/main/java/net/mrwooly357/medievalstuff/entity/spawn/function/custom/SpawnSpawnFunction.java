@@ -1,26 +1,28 @@
 package net.mrwooly357.medievalstuff.entity.spawn.function.custom;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SpawnReason;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
 import net.mrwooly357.medievalstuff.entity.spawn.function.SpawnFunction;
 import net.mrwooly357.medievalstuff.entity.spawn.function.SpawnFunctionType;
 import net.mrwooly357.medievalstuff.entity.spawn.function.SpawnFunctionTypes;
 import net.mrwooly357.medievalstuff.entity.spawn.function.condition.SpawnFunctionCondition;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class SpawnSpawnFunction extends SpawnFunction {
+public final class SpawnSpawnFunction extends SpawnFunction {
 
     public static final MapCodec<SpawnSpawnFunction> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> addDefaultField(instance)
+            instance -> instance.group(
+                    SpawnFunctionCondition.CODEC.listOf().optionalFieldOf("conditions", List.of()).forGetter(function -> function.conditions)
+            )
                     .apply(instance, SpawnSpawnFunction::new)
     );
 
-    protected SpawnSpawnFunction(List<SpawnFunctionCondition> conditions) {
+    private SpawnSpawnFunction(List<SpawnFunctionCondition> conditions) {
         super(conditions);
     }
 
@@ -35,47 +37,25 @@ public class SpawnSpawnFunction extends SpawnFunction {
     }
 
     @Override
-    protected Entity applyEffects(Entity entity, SpawnContext context) {
+    protected Pair<Entity, SpawnReason> applyEffects(Entity entity, SpawnContext context, SpawnReason reason) {
         context.getWorld().spawnNewEntityAndPassengers(entity);
 
-        return entity;
+        return Pair.of(entity, reason);
     }
 
 
-    public static final class Builder {
-
-        private final List<SpawnFunctionCondition> conditions = new ArrayList<>();
+    public static final class Builder extends SpawnFunction.Builder<Builder> {
 
         private Builder() {}
 
-
-        public Builder condition(SpawnFunctionCondition condition) {
-            if (!conditions.contains(condition)) {
-                conditions.add(condition);
-
-                return this;
-            } else
-                throw new IllegalArgumentException("Duplicate spawn function condition! Duplicate: " + condition + ".");
-        }
 
         public SpawnSpawnFunction build() {
             return new SpawnSpawnFunction(List.copyOf(conditions));
         }
 
         @Override
-        public boolean equals(Object object) {
-            return super.equals(object) || (object instanceof Builder builder
-                    && conditions.equals(builder.conditions));
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(conditions);
-        }
-
-        @Override
-        public String toString() {
-            return "SpawnSpawnFunction.Builder[conditions: " + conditions + "]";
+        protected Builder getThisBuilder() {
+            return this;
         }
     }
 }

@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.mrwooly357.medievalstuff.MedievalStuff;
-import net.mrwooly357.medievalstuff.attachment.custom.AttackData;
+import net.mrwooly357.medievalstuff.attachment.custom.AttackPreparationData;
 import net.mrwooly357.medievalstuff.attachment.custom.ComboData;
 import net.mrwooly357.medievalstuff.registry.MSRegistries;
 import net.mrwooly357.medievalstuff.util.MSUtil;
@@ -15,11 +15,11 @@ import java.util.function.Consumer;
 
 public final class MSAttachmentTypes {
 
-    public static final AttachmentType<AttackData> ATTACK_DATA = register(
-            "attack_data", builder -> builder
-                    .initializer(() -> new AttackData(0, 0))
-                    .persistent(AttackData.CODEC)
-                    .syncWith(AttackData.PACKET_CODEC, AttachmentSyncPredicate.targetOnly())
+    public static final AttachmentType<AttackPreparationData> ATTACK_PREPARATION_DATA = register(
+            "attack_preparation_data", builder -> builder
+                    .initializer(() -> new AttackPreparationData(0))
+                    .persistent(AttackPreparationData.CODEC)
+                    .syncWith(AttackPreparationData.PACKET_CODEC, AttachmentSyncPredicate.targetOnly())
     );
     public static final AttachmentType<ComboData> COMBO_DATA = register(
             "combo_data", builder -> builder

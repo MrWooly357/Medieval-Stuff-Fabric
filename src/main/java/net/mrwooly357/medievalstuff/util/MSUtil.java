@@ -2,6 +2,7 @@ package net.mrwooly357.medievalstuff.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.mrwooly357.medievalstuff.MedievalStuff;
@@ -19,6 +20,7 @@ public final class MSUtil {
             )
                     .apply(instance, Box::new)
     );
+    public static final Codec<SpawnReason> SPAWN_REASON_CODEC = Codec.STRING.xmap(SpawnReason::valueOf, Enum::name);
 
     private MSUtil() {}
 

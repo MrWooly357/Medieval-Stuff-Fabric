@@ -9,22 +9,22 @@ import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelectorTypes;
 
 import java.util.List;
 
-public final class EachElementSpawnSelector extends SpawnSelector {
+public final class NoneSpawnSelector extends SpawnSelector {
 
-    public static final EachElementSpawnSelector INSTANCE = new EachElementSpawnSelector();
-    public static final MapCodec<EachElementSpawnSelector> CODEC = MapCodec.unit(INSTANCE);
+    public static final NoneSpawnSelector INSTANCE = new NoneSpawnSelector();
+    public static final MapCodec<NoneSpawnSelector> CODEC = MapCodec.unit(INSTANCE);
 
-    private EachElementSpawnSelector() {}
+    private NoneSpawnSelector() {}
 
 
     @Override
-    protected SpawnSelectorType<EachElementSpawnSelector> getType() {
-        return SpawnSelectorTypes.EACH_ELEMENT;
+    protected SpawnSelectorType<NoneSpawnSelector> getType() {
+        return SpawnSelectorTypes.NONE;
     }
 
     @Override
     public <SSDH extends SpawnSelectorDataHolder> List<SSDH> select(List<SSDH> objects, SpawnContext context) {
-        return objects;
+        return List.of();
     }
 
 
@@ -37,8 +37,8 @@ public final class EachElementSpawnSelector extends SpawnSelector {
 
 
         @Override
-        protected SpawnSelectorType<EachElementSpawnSelector> getSelectorType() {
-            return SpawnSelectorTypes.EACH_ELEMENT;
+        protected SpawnSelectorType<NoneSpawnSelector> getSelectorType() {
+            return SpawnSelectorTypes.NONE;
         }
     }
 }

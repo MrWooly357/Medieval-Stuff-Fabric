@@ -4,6 +4,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.dynamic.Range;
 import net.minecraft.util.math.BlockPos;
@@ -14,9 +15,7 @@ import net.mrwooly357.medievalstuff.entity.spawn.rule.SpawnRule;
 import net.mrwooly357.medievalstuff.entity.spawn.rule.SpawnRuleType;
 import net.mrwooly357.medievalstuff.entity.spawn.rule.SpawnRuleTypes;
 
-import java.util.Objects;
-
-public class LightLimitSpawnRule extends SpawnRule {
+public final class LightLimitSpawnRule extends SpawnRule {
 
     private static final Range<Integer> DEFAULT = new Range<>(0, 15);
     public static final MapCodec<LightLimitSpawnRule> CODEC = RecordCodecBuilder.mapCodec(
@@ -50,7 +49,7 @@ public class LightLimitSpawnRule extends SpawnRule {
     }
 
     @Override
-    public boolean test(Vec3d pos, Entity entity, SpawnContext context) {
+    public boolean test(Vec3d pos, Entity entity, SpawnContext context, SpawnReason reason) {
         ServerWorld world = context.getWorld();
         BlockPos pos1 = BlockPos.ofFloored(pos);
 
@@ -60,10 +59,10 @@ public class LightLimitSpawnRule extends SpawnRule {
 
     public static final class Builder {
 
-        private int minBlockLight;
-        private int maxBlockLight;
-        private int minSkyLight;
-        private int maxSkyLight;
+        private int minBlockLight = 0;
+        private int maxBlockLight = 15;
+        private int minSkyLight = 0;
+        private int maxSkyLight = 15;
 
         private Builder() {}
 
@@ -94,28 +93,6 @@ public class LightLimitSpawnRule extends SpawnRule {
 
         public LightLimitSpawnRule build() {
             return new LightLimitSpawnRule(new Range<>(minBlockLight, maxBlockLight), new Range<>(minSkyLight, maxSkyLight));
-        }
-
-        @Override
-        public boolean equals(Object object) {
-            return super.equals(object) || (object instanceof Builder builder
-                    && minBlockLight == builder.minBlockLight
-                    && maxBlockLight == builder.maxBlockLight
-                    && minSkyLight == builder.minSkyLight
-                    && maxSkyLight == builder.maxSkyLight);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(minBlockLight, maxBlockLight, minSkyLight, maxSkyLight);
-        }
-
-        @Override
-        public String toString() {
-            return "LightLimitSpawnRule[min_block_light: " + minBlockLight
-                    + ", max_block_light: " + maxBlockLight
-                    + ", min_sky_light: " + minSkyLight
-                    + ", max_sky_light: " + maxSkyLight;
         }
     }
 }

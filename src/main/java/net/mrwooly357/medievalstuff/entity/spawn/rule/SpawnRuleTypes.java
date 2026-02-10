@@ -17,7 +17,7 @@ public final class SpawnRuleTypes {
 
 
     private static <SR extends SpawnRule> SpawnRuleType<SR> register(String id, MapCodec<SR> codec) {
-        return Registry.register(MSRegistries.SPAWN_RULE_TYPE, MSUtil.id(id), SpawnRuleType.of(codec));
+        return Registry.register(MSRegistries.SPAWN_RULE_TYPE, MSUtil.id(id), new SpawnRuleType<>(codec));
     }
 
     public static void initialize() {

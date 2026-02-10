@@ -12,7 +12,7 @@ import net.mrwooly357.medievalstuff.util.MSUtil;
 
 import java.util.List;
 
-public class RandomSpawnPosFinder extends SpawnPosFinder {
+public final class RandomSpawnPosFinder extends SpawnPosFinder {
 
     public static final MapCodec<RandomSpawnPosFinder> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
@@ -21,8 +21,8 @@ public class RandomSpawnPosFinder extends SpawnPosFinder {
                     .apply(instance, RandomSpawnPosFinder::new)
     );
 
-    protected final Box area;
-    protected final int maxAttempts;
+    private final Box area;
+    private final int maxAttempts;
 
     public RandomSpawnPosFinder(Box area) {
         this.area = area;

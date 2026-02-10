@@ -4,18 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.mrwooly357.medievalstuff.registry.MSRegistries;
 
-public final class SpawnRuleType<SR extends SpawnRule> {
+public record SpawnRuleType<SR extends SpawnRule>(MapCodec<SR> codec) {
 
     public static final Codec<SpawnRuleType<?>> CODEC = MSRegistries.SPAWN_RULE_TYPE.getCodec();
-
-    final MapCodec<SR> codec;
-
-    private SpawnRuleType(MapCodec<SR> codec) {
-        this.codec = codec;
-    }
-
-
-    public static <SR extends SpawnRule> SpawnRuleType<SR> of(MapCodec<SR> codec) {
-        return new SpawnRuleType<>(codec);
-    }
 }

@@ -2,13 +2,16 @@ package net.mrwooly357.medievalstuff.block;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.mrwooly357.medievalstuff.MedievalStuff;
 import net.mrwooly357.medievalstuff.block.custom.candelabrum.CandelabrumBlock;
+import net.mrwooly357.medievalstuff.block.custom.spawner.dark.DarkSpawnerBlock;
 import net.mrwooly357.medievalstuff.util.MSUtil;
 
 public final class MSBlocks {
@@ -63,6 +66,19 @@ public final class MSBlocks {
     );
     public static final Block BLACK_IRON_CANDELABRUM = register(
             "black_iron_candelabrum", createCandelabrum(MapColor.BLACK)
+    );
+    public static final Block DARK_SPAWNER = register(
+            "dark_spawner", new DarkSpawnerBlock(
+                    AbstractBlock.Settings.create()
+                            .strength(100.0F)
+                            .luminance(state -> state.get(DarkSpawnerBlock.STATE).getLuminance())
+                            .suffocates(Blocks::never)
+                            .allowsSpawning(Blocks::never)
+                            .blockVision(Blocks::never)
+                            .nonOpaque()
+                            .mapColor(MapColor.DEEPSLATE_GRAY)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+            )
     );
 
     private MSBlocks() {}

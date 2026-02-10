@@ -24,7 +24,7 @@ public final class MSDynamicRegistryProvider extends FabricDynamicRegistryProvid
         RegistryWrapper.Impl<Enchantment> enchantmentRegistry = registries.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
         entries.add(enchantmentRegistry, MSEnchantments.COMBO);
         RegistryWrapper.Impl<SpawnTable> spawnTableRegistry = registries.getWrapperOrThrow(MSRegistryKeys.SPAWN_TABLE);
-        entries.add(spawnTableRegistry, SpawnTables.TEST);
+        entries.add(spawnTableRegistry, SpawnTables.EMPTY);
     }
 
     @Override

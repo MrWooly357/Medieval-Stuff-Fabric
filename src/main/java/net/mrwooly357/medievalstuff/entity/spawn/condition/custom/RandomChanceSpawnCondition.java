@@ -2,6 +2,7 @@ package net.mrwooly357.medievalstuff.entity.spawn.condition.custom;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
 import net.mrwooly357.medievalstuff.entity.spawn.condition.SpawnCondition;
@@ -35,7 +36,7 @@ public class RandomChanceSpawnCondition extends SpawnCondition {
     }
 
     @Override
-    public boolean test(SpawnContext context) {
+    public boolean test(SpawnContext context, SpawnReason reason) {
         Random random = context.getWorld().getRandom();
 
         return random.nextFloat() <= chance.get(random);

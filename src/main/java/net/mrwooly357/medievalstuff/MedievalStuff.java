@@ -3,6 +3,7 @@ package net.mrwooly357.medievalstuff;
 import net.fabricmc.api.ModInitializer;
 
 import net.mrwooly357.medievalstuff.attachment.MSAttachmentTypes;
+import net.mrwooly357.medievalstuff.block.MSBlockEntityTypes;
 import net.mrwooly357.medievalstuff.block.MSBlocks;
 import net.mrwooly357.medievalstuff.command.MSCommands;
 import net.mrwooly357.medievalstuff.enchantment.effects.custom.entity_damage.MSEnchantmentEntityDamageEffects;
@@ -34,6 +35,7 @@ public final class MedievalStuff implements ModInitializer {
 		MSEnchantmentEntityDamageEffects.initialize();
 		MSEnchantmentEffectComponentTypes.initialize();
 		MSBlocks.initialize();
+		MSBlockEntityTypes.initialize();
 		SpawnContextTypes.initialize();
 		SpawnSelectorTypes.initialize();
 		SpawnConditionTypes.initialize();

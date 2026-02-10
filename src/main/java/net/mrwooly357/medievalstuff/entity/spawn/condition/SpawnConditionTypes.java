@@ -17,7 +17,7 @@ public final class SpawnConditionTypes {
 
 
     private static <SC extends SpawnCondition> SpawnConditionType<SC> register(String id, MapCodec<SC> codec) {
-        return Registry.register(MSRegistries.SPAWN_CONDITION_TYPE, MSUtil.id(id), SpawnConditionType.of(codec));
+        return Registry.register(MSRegistries.SPAWN_CONDITION_TYPE, MSUtil.id(id), new SpawnConditionType<>(codec));
     }
 
     public static void initialize() {

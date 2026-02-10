@@ -1,9 +1,11 @@
 package net.mrwooly357.medievalstuff.entity.spawn.entry;
 
-import com.mojang.datafixers.Products;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.server.world.ServerWorld;
 import net.mrwooly357.medievalstuff.entity.spawn.condition.SpawnCondition;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
 import net.mrwooly357.medievalstuff.entity.spawn.function.SpawnFunction;
@@ -13,39 +15,26 @@ import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelectorDataHolde
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 public abstract class SpawnEntry implements SpawnSelectorDataHolder {
 
-    public static final Codec<SpawnEntry> CODEC = SpawnEntryType.CODEC.dispatch(SpawnEntry::getType, type -> type.codec);
-    protected static final Predicate<SpawnContext> DEFAULT_COMBINED_CONDITION = context -> true;
+    public static final Codec<SpawnEntry> CODEC = SpawnEntryType.CODEC.dispatch(SpawnEntry::getType, SpawnEntryType::codec);
+    protected static final BiPredicate<SpawnContext, SpawnReason> DEFAULT_COMBINED_CONDITION = (context, reason) -> true;
 
     protected final SpawnSelector.Data selectorData;
-    public final List<SpawnCondition> conditions;
-    protected Predicate<SpawnContext> combinedCondition = null;
+    protected final List<SpawnCondition> conditions;
+    protected BiPredicate<SpawnContext, SpawnReason> combinedCondition = null;
+    protected final SpawnReason reason;
 
-    protected SpawnEntry(SpawnSelector.Data selectorData, List<SpawnCondition> conditions) {
+    protected SpawnEntry(SpawnSelector.Data selectorData, List<SpawnCondition> conditions, SpawnReason reason) {
         this.selectorData = selectorData;
         this.conditions = conditions;
+        this.reason = reason;
     }
 
 
     protected abstract SpawnEntryType<? extends SpawnEntry> getType();
-
-    protected static <SE extends SpawnEntry> Products.P2<RecordCodecBuilder.Mu<SE>, SpawnSelector.Data, List<SpawnCondition>> addDefaultFields(RecordCodecBuilder.Instance<SE> instance) {
-        return instance.group(
-                SpawnSelector.Data.CODEC.fieldOf("selector_data").forGetter(entry -> entry.selectorData),
-                SpawnCondition.CODEC.listOf().optionalFieldOf("conditions", List.of()).forGetter(entry -> entry.conditions)
-        );
-    }
-
-    protected SpawnSelector.Data getSelectorData() {
-        return selectorData;
-    }
-
-    protected List<SpawnCondition> getConditions() {
-        return conditions;
-    }
 
     public void setCombinedCondition(List<SpawnCondition> poolConditions, List<SpawnCondition> tableConditions) {
         List<SpawnCondition> conditions1 = new ArrayList<>();
@@ -69,16 +58,18 @@ public abstract class SpawnEntry implements SpawnSelectorDataHolder {
 
     public void setCombinedFunction(List<SpawnFunction> poolFunctions, List<SpawnFunction> tableFunctions) {}
 
-    public final List<Entity> generateEntities(SpawnContext context) {
+    public abstract List<EntityType<?>> getEntities(ServerWorld world);
+
+    public final List<Pair<Entity, SpawnReason>> generateEntities(SpawnContext context) {
         conditions.forEach(context::check);
 
-        if (combinedCondition.test(context))
+        if (combinedCondition.test(context, reason))
             return tryGenerateEntities(context);
         else
             return List.of();
     }
 
-    protected abstract List<Entity> tryGenerateEntities(SpawnContext context);
+    protected abstract List<Pair<Entity, SpawnReason>> tryGenerateEntities(SpawnContext context);
 
     @Override
     public final SpawnSelector.Data getSpawnSelectorData() {

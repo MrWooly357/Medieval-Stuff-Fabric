@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class SpawnSelector {
 
-    public static final Codec<SpawnSelector> CODEC = SpawnSelectorType.CODEC.dispatch(SpawnSelector::getType, type -> type.codec);
+    public static final Codec<SpawnSelector> CODEC = SpawnSelectorType.CODEC.dispatch(SpawnSelector::getType, SpawnSelectorType::codec);
 
     protected SpawnSelector() {}
 
@@ -19,7 +19,7 @@ public abstract class SpawnSelector {
 
     public static abstract class Data {
 
-        public static final Codec<Data> CODEC = SpawnSelectorType.CODEC.dispatch(Data::getSelectorType, type -> type.dataCodec);
+        public static final Codec<Data> CODEC = SpawnSelectorType.CODEC.dispatch(Data::getSelectorType, SpawnSelectorType::dataCodec);
 
         protected Data() {}
 

@@ -9,6 +9,7 @@ import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import net.mrwooly357.medievalstuff.attachment.MSAttachmentTypes;
+import net.mrwooly357.medievalstuff.attachment.custom.AttackPreparationData;
 import net.mrwooly357.medievalstuff.attachment.custom.ComboData;
 import net.mrwooly357.medievalstuff.entity.custom.AnimatedEntity;
 import net.mrwooly357.medievalstuff.entity.custom.WeaponUser;
@@ -34,7 +35,17 @@ public abstract class LivingEntityMixin implements WeaponUser, AnimatedEntity {
     @Inject(method = "tick", at = @At("TAIL"))
     private void injectTick(CallbackInfo ci) {
         if (!((LivingEntity) (Object) this).getWorld().isClient())
-            WeaponUser.tick(this);
+            weaponUserTick();
+    }
+
+    @Override
+    public AttackPreparationData getAttackPreparationData() {
+        return ((LivingEntity) (Object) this).getAttachedOrCreate(MSAttachmentTypes.ATTACK_PREPARATION_DATA);
+    }
+
+    @Override
+    public void setAttackPreparationData(int remainingPreparationTicks) {
+        ((LivingEntity) (Object) this).setAttached(MSAttachmentTypes.ATTACK_PREPARATION_DATA, new AttackPreparationData(remainingPreparationTicks));
     }
 
     @Override
@@ -53,9 +64,14 @@ public abstract class LivingEntityMixin implements WeaponUser, AnimatedEntity {
     }
 
     @Override
-    public void startPlayingAnimation(Animation animation, float speedMultiplier) {
+    public void startAnimation(Animation animation, float speedMultiplier) {
         animations.put(animation, Pair.of(new AnimationState(), speedMultiplier));
         animations.get(animation).getFirst().start(((LivingEntity) (Object) this).age);
+    }
+
+    @Override
+    public void stopAnimation(Animation animation) {
+        animations.remove(animation);
     }
 
     @Override
@@ -66,7 +82,7 @@ public abstract class LivingEntityMixin implements WeaponUser, AnimatedEntity {
             state.run(state1 -> {
                 float runningSeconds = AnimationHelper.getRunningSeconds(animation, state.getTimeRunning());
 
-                for (Map.Entry<String, List<Transformation>> entry : animation.boneAnimations().entrySet()) {
+                for (Map.Entry<String, List<Transformation>> entry : animation.boneAnimations().entrySet())
                     model.getChild(entry.getKey()).ifPresent(part1 -> entry.getValue().forEach(transformation -> {
                         Keyframe[] keyframes = transformation.keyframes();
                         int i = Math.max(0, MathHelper.binarySearch(0, keyframes.length, index -> runningSeconds <= keyframes[index].timestamp()) - 1);
@@ -84,7 +100,6 @@ public abstract class LivingEntityMixin implements WeaponUser, AnimatedEntity {
                         keyframe1.interpolation().apply(AnimatedEntityModel.TEMPORARY_VECTOR, f, keyframes, i, j, 1.0F);
                         transformation.target().apply(part1, AnimatedEntityModel.TEMPORARY_VECTOR);
                     }));
-                }
             });
         });
     }

@@ -1,8 +1,12 @@
 package net.mrwooly357.medievalstuff.entity.spawn;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.server.world.ServerWorld;
 import net.mrwooly357.medievalstuff.entity.spawn.condition.SpawnCondition;
 import net.mrwooly357.medievalstuff.entity.spawn.context.SpawnContext;
 import net.mrwooly357.medievalstuff.entity.spawn.entry.SpawnEntry;
@@ -58,11 +62,18 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
         });
     }
 
-    List<Entity> generateEntities(SpawnContext context) {
+    List<EntityType<?>> getEntities(ServerWorld world) {
+        List<EntityType<?>> types = new ArrayList<>();
+        entries.forEach(entry -> types.addAll(entry.getEntities(world)));
+
+        return types;
+    }
+
+    List<Pair<Entity, SpawnReason>> generateEntities(SpawnContext context) {
         conditions.forEach(context::check);
         rules.forEach(context::check);
         functions.forEach(context::check);
-        List<Entity> entities = new ArrayList<>();
+        List<Pair<Entity, SpawnReason>> entities = new ArrayList<>();
         selector.select(entries, context).forEach(entry -> entities.addAll(entry.generateEntities(context)));
 
         return List.copyOf(entities);
@@ -116,7 +127,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate spawn condition! Duplicate: " + condition + ".");
+                throw new IllegalArgumentException("Duplicate spawn condition " + condition + ".");
         }
 
         public Builder rule(SpawnRule rule) {
@@ -125,7 +136,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate spawn rule! Duplicate: " + rule + ".");
+                throw new IllegalArgumentException("Duplicate spawn rule " + rule + ".");
         }
 
         public Builder entry(SpawnEntry entry) {
@@ -134,7 +145,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate spawn entry! Duplicate: " + entry + ".");
+                throw new IllegalArgumentException("Duplicate spawn entry " + entry + ".");
         }
 
         public Builder function(SpawnFunction function) {
@@ -143,7 +154,7 @@ public final class SpawnPool implements SpawnSelectorDataHolder {
 
                 return this;
             } else
-                throw new IllegalArgumentException("Duplicate spawn function! Duplicate: " + function + ".");
+                throw new IllegalArgumentException("Duplicate spawn function " + function + ".");
         }
 
         public SpawnPool build(SpawnSelector.Data selectorData, SpawnSelector selector) {

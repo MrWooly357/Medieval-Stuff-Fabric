@@ -4,12 +4,16 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.registry.Registry;
 import net.mrwooly357.medievalstuff.MedievalStuff;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.custom.EachElementSpawnSelector;
+import net.mrwooly357.medievalstuff.entity.spawn.selector.custom.NoneSpawnSelector;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.custom.WeightedSpawnSelector;
 import net.mrwooly357.medievalstuff.registry.MSRegistries;
 import net.mrwooly357.medievalstuff.util.MSUtil;
 
 public final class SpawnSelectorTypes {
 
+    public static final SpawnSelectorType<NoneSpawnSelector> NONE = register(
+            "none", NoneSpawnSelector.CODEC, NoneSpawnSelector.Data.CODEC
+    );
     public static final SpawnSelectorType<EachElementSpawnSelector> EACH_ELEMENT = register(
             "each_element", EachElementSpawnSelector.CODEC, EachElementSpawnSelector.Data.CODEC
     );
@@ -21,7 +25,7 @@ public final class SpawnSelectorTypes {
 
 
     private static <SS extends SpawnSelector> SpawnSelectorType<SS> register(String id, MapCodec<SS> codec, MapCodec<? extends SpawnSelector.Data> dataCodec) {
-        return Registry.register(MSRegistries.SPAWN_SELECTOR_TYPE, MSUtil.id(id), SpawnSelectorType.of(codec, dataCodec));
+        return Registry.register(MSRegistries.SPAWN_SELECTOR_TYPE, MSUtil.id(id), new SpawnSelectorType<>(codec, dataCodec));
     }
 
     public static void initialize() {

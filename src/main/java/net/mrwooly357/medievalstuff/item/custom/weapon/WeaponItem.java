@@ -5,6 +5,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
+import net.mrwooly357.medievalstuff.entity.custom.WeaponUser;
 
 public abstract class WeaponItem extends ToolItem {
 
@@ -34,5 +38,11 @@ public abstract class WeaponItem extends ToolItem {
         stack.damage(1, attacker, EquipmentSlot.MAINHAND);
 
         return stack;
+    }
+
+    protected abstract void onClick(ItemStack stack, Hand hand, ServerPlayerEntity player, Identifier button);
+
+    protected void attackAfter(ItemStack stack, Hand hand, WeaponUser user, int ticks) {
+        //user.setAttackData(ticks, 0);
     }
 }
