@@ -7,13 +7,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.*;
 
 public final class DarkSpawnerData {
 
-    private final DarkSpawnerConfig config;
+
     private int wave;
     private final Set<Pair<Integer, Entity>> pendingSpawns;
     private final Set<UUID> trackedEntities;
@@ -25,7 +25,6 @@ public final class DarkSpawnerData {
 
     DarkSpawnerData() {
         this(
-                DarkSpawnerConfig.DEFAULT,
                 0,
                 new HashSet<>(),
                 new HashSet<>(),
@@ -38,7 +37,6 @@ public final class DarkSpawnerData {
     }
 
     DarkSpawnerData(
-            DarkSpawnerConfig config,
             int wave,
             Set<Pair<Integer, Entity>> pendingSpawns,
             Set<UUID> trackedEntities,
@@ -48,7 +46,6 @@ public final class DarkSpawnerData {
             double lastDisplayEntityRotation,
             int remainingDisplayEntityDisplayTicks
     ) {
-        this.config = config;
         this.wave = wave;
         this.pendingSpawns = pendingSpawns;
         this.trackedEntities = trackedEntities;
@@ -60,10 +57,9 @@ public final class DarkSpawnerData {
     }
 
 
-    Codec<DarkSpawnerData> codec(ServerWorld world) {
+    static Codec<DarkSpawnerData> createCodec(World world) {
         return RecordCodecBuilder.create(
                 instance -> instance.group(
-                        DarkSpawnerConfig.CODEC.optionalFieldOf("config", DarkSpawnerConfig.DEFAULT).forGetter(DarkSpawnerData::getConfig),
                         Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("wave", 0).forGetter(DarkSpawnerData::getWave),
                         Codec.list(Codec.pair(Codec.intRange(0, Integer.MAX_VALUE), NbtCompound.CODEC.xmap(nbt -> EntityType.getEntityFromNbt(nbt, world).orElseThrow(), entity -> entity.writeNbt(new NbtCompound()))))
                                 .xmap(HashSet::new, List::copyOf).optionalFieldOf("pending_spawns", new HashSet<>())
@@ -80,10 +76,6 @@ public final class DarkSpawnerData {
                 )
                         .apply(instance, DarkSpawnerData::new)
         );
-    }
-
-    DarkSpawnerConfig getConfig() {
-        return config;
     }
 
     int getWave() {
@@ -141,7 +133,6 @@ public final class DarkSpawnerData {
     @Override
     public int hashCode() {
         return Objects.hash(
-                config,
                 wave,
                 pendingSpawns,
                 trackedEntities,
@@ -156,7 +147,6 @@ public final class DarkSpawnerData {
     @Override
     public boolean equals(Object object) {
         return super.equals(object) || (object instanceof DarkSpawnerData data
-                && config.equals(data.config)
                 && wave == data.wave
                 && pendingSpawns.equals(data.pendingSpawns)
                 && trackedEntities.equals(data.trackedEntities)
@@ -169,8 +159,7 @@ public final class DarkSpawnerData {
 
     @Override
     public String toString() {
-        return "DarkSpawnerData[config: " + config
-                + ", wave: " + wave
+        return "DarkSpawnerData[wave: " + wave
                 + ", pending_spawns: " + pendingSpawns
                 + ", tracked_entities: " + trackedEntities
                 + ", ticks_remaining_before_next_intermediate_spawns: " + ticksRemainingBeforeNextIntermediateSpawns
