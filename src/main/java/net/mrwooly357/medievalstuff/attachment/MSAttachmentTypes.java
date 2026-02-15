@@ -7,6 +7,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.mrwooly357.medievalstuff.MedievalStuff;
 import net.mrwooly357.medievalstuff.attachment.custom.AttackPreparationData;
+import net.mrwooly357.medievalstuff.attachment.custom.ChunkMarksData;
 import net.mrwooly357.medievalstuff.attachment.custom.ComboData;
 import net.mrwooly357.medievalstuff.registry.MSRegistries;
 import net.mrwooly357.medievalstuff.util.MSUtil;
@@ -26,6 +27,12 @@ public final class MSAttachmentTypes {
                     .initializer(() -> new ComboData(0, Integer.MAX_VALUE, 0))
                     .persistent(ComboData.CODEC)
                     .syncWith(ComboData.PACKET_CODEC, AttachmentSyncPredicate.targetOnly())
+    );
+    public static final AttachmentType<ChunkMarksData> CHUNK_MARKS_DATA = register(
+            "chunk_marks_data", builder -> builder
+                    .initializer(() -> ChunkMarksData.DEFAULT)
+                    .persistent(ChunkMarksData.CODEC)
+                    .syncWith(ChunkMarksData.PACKET_CODEC, AttachmentSyncPredicate.all())
     );
 
     private MSAttachmentTypes() {}

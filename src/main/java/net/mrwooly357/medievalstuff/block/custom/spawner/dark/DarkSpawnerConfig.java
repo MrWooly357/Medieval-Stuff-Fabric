@@ -15,7 +15,6 @@ import net.mrwooly357.medievalstuff.util.MSUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Objects;
 
 public record DarkSpawnerConfig(
         Box playerDetectionArea,
@@ -66,58 +65,6 @@ public record DarkSpawnerConfig(
             )
                     .apply(instance, DarkSpawnerConfig::new)
     );
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-                playerDetectionArea,
-                activationArea,
-                waves,
-                spawns,
-                simultaneousSpawns,
-                simultaneousSpawnsAddedPerPlayer,
-                intermediateSpawns,
-                ticksBetweenIntermediateSpawns,
-                intermediateSpawnsAddedPerPlayer,
-                startEjectingLootDetectionArea,
-                perPlayerLoot,
-                loot,
-                cooldownDuration
-        );
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return (this == object) || (object instanceof DarkSpawnerConfig(
-                Box otherPlayerDetectionArea,
-                Box otherActivationArea,
-                IntProvider otherWaves,
-                Map<Integer, RegistryKey<SpawnTable>> otherSpawns,
-                Map<Integer, IntProvider> otherSimultaneousSpawns,
-                Map<Integer, IntProvider> otherSimultaneousSpawnsAddedPerPlayer,
-                Map<Integer, IntProvider> otherIntermediateSpawns,
-                Map<Integer, IntProvider> otherTicksBetweenIntermediateSpawns,
-                Map<Integer, IntProvider> otherIntermediateSpawnsAddedPerPlayer,
-                Box otherStartEjectingLootDetectionArea,
-                boolean otherPerPlayerLoot,
-                RegistryKey<LootTable> otherLoot,
-                IntProvider otherCooldownDuration
-        )
-                && playerDetectionArea.equals(otherPlayerDetectionArea)
-                && activationArea.equals(otherActivationArea)
-                && waves.equals(otherWaves)
-                && spawns.equals(otherSpawns)
-                && simultaneousSpawns.equals(otherSimultaneousSpawns)
-                && simultaneousSpawnsAddedPerPlayer.equals(otherSimultaneousSpawnsAddedPerPlayer)
-                && intermediateSpawns.equals(otherIntermediateSpawns)
-                && ticksBetweenIntermediateSpawns.equals(otherTicksBetweenIntermediateSpawns)
-                && intermediateSpawnsAddedPerPlayer.equals(otherIntermediateSpawnsAddedPerPlayer)
-                && startEjectingLootDetectionArea.equals(otherStartEjectingLootDetectionArea)
-                && perPlayerLoot == otherPerPlayerLoot
-                && loot.equals(otherLoot)
-                && cooldownDuration.equals(otherCooldownDuration));
-    }
 
     @Override
     public @NotNull String toString() {

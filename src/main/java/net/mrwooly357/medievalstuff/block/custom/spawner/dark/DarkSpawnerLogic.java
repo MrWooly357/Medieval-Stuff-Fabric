@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,7 +36,13 @@ public final class DarkSpawnerLogic {
         );
     }
 
-    void serverTick(ServerWorld world, BlockPos pos, BlockState state) {}
+    void serverTick(ServerWorld world, BlockPos pos, BlockState state) {
+        if (state.get(DarkSpawnerBlock.STATE).equals(DarkSpawnerBlock.State.ACTIVE)) {
+        } else if (!state.get(DarkSpawnerBlock.STATE).equals(DarkSpawnerBlock.State.WAITING_FOR_PLAYERS) && !world.getNonSpectatingEntities(PlayerEntity.class, config.playerDetectionArea().offset(pos)).isEmpty())
+            world.setBlockState(pos, state.with(DarkSpawnerBlock.STATE, DarkSpawnerBlock.State.WAITING_FOR_PLAYERS));
+        else if (!world.getNonSpectatingEntities(PlayerEntity.class, config.activationArea().offset(pos)).isEmpty())
+            world.setBlockState(pos, state.with(DarkSpawnerBlock.STATE, DarkSpawnerBlock.State.ACTIVE));
+    }
 
     void clientTick(ClientWorld world, BlockPos pos, BlockState state) {}
 

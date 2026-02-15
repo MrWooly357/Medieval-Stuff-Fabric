@@ -1,3 +1,6 @@
-// 1.21.1	2026-02-09T07:44:21.1388219	Medieval Stuff/Dynamic Registries
+// 1.21.1	2026-02-14T14:37:14.7176182	Medieval Stuff/Dynamic Registries
+37148b4a888a44b0d6ae6b975f53a8d642ccd16f data\medievalstuff\worldgen\structure_set\small_dungeons.json
 414f6067d7f2ff4a8019cb59cf0e003b594ac72d data\medievalstuff\medievalstuff\spawn_table\empty.json
+e1596cdcf4e09c5f393716c64ce30fc23ecf87d6 data\medievalstuff\worldgen\template_pool\small_taiga_dungeon\entrance.json
+4f0689b33ef064bdd52b64af574edc44a6095e45 data\medievalstuff\worldgen\structure\small_taiga_dungeon.json
 f81697285d96022c38c78e0803b2b6911126eab4 data\medievalstuff\enchantment\combo.json

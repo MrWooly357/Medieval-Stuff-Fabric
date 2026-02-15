@@ -16,6 +16,7 @@ import net.mrwooly357.medievalstuff.entity.spawn.function.condition.SpawnFunctio
 import net.mrwooly357.medievalstuff.entity.spawn.pos_finder.SpawnPosFinderType;
 import net.mrwooly357.medievalstuff.entity.spawn.rule.SpawnRuleType;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelectorType;
+import net.mrwooly357.medievalstuff.world.mark.WorldMarkType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,6 @@ import java.util.List;
 public final class MSRegistries {
 
     static final List<Runnable> DYNAMIC_REGISTRY_INITIALIZERS = new ArrayList<>();
-    public static final Registry<AttachmentType<?>> ATTACHMENT_TYPE = of(MSRegistryKeys.ATTACHMENT_TYPE);
     public static final Registry<MapCodec<? extends EnchantmentEntityDamageEffect>> ENCHANTMENT_ENTITY_DAMAGE_EFFECT_TYPE = of(MSRegistryKeys.ENCHANTMENT_ENTITY_DAMAGE_EFFECT_TYPE);
     public static final Registry<SpawnContextType> SPAWN_CONTEXT_TYPE = of(MSRegistryKeys.SPAWN_CONTEXT_TYPE);
     public static final Registry<SpawnSelectorType<?>> SPAWN_SELECTOR_TYPE = of(MSRegistryKeys.SPAWN_SELECTOR_TYPE);
@@ -33,6 +33,8 @@ public final class MSRegistries {
     public static final Registry<SpawnFunctionConditionType<?>> SPAWN_FUNCTION_CONDITION_TYPE = of(MSRegistryKeys.SPAWN_FUNCTION_CONDITION_TYPE);
     public static final Registry<SpawnFunctionType<?>> SPAWN_FUNCTION_TYPE = of(MSRegistryKeys.SPAWN_FUNCTION_TYPE);
     public static final Registry<SpawnEntryType<?>> SPAWN_ENTRY_TYPE = of(MSRegistryKeys.SPAWN_ENTRY_TYPE);
+    public static final Registry<WorldMarkType<?>> WORLD_MARK_TYPE = of(MSRegistryKeys.WORLD_MARK_TYPE);
+    public static final Registry<AttachmentType<?>> ATTACHMENT_TYPE = of(MSRegistryKeys.ATTACHMENT_TYPE);
 
     private MSRegistries() {}
 

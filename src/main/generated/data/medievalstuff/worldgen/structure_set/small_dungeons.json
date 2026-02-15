@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 24579855,
+    "separation": 8,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "medievalstuff:small_taiga_dungeon",
+      "weight": 1
+    }
+  ]
+}

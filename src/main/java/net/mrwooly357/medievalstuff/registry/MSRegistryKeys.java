@@ -17,12 +17,12 @@ import net.mrwooly357.medievalstuff.entity.spawn.pos_finder.SpawnPosFinderType;
 import net.mrwooly357.medievalstuff.entity.spawn.rule.SpawnRuleType;
 import net.mrwooly357.medievalstuff.entity.spawn.selector.SpawnSelectorType;
 import net.mrwooly357.medievalstuff.util.MSUtil;
+import net.mrwooly357.medievalstuff.world.mark.WorldMarkType;
 
 import java.util.function.Supplier;
 
 public final class MSRegistryKeys {
-
-    public static final RegistryKey<Registry<AttachmentType<?>>> ATTACHMENT_TYPE = of("attachment_type");
+    
     public static final RegistryKey<Registry<MapCodec<? extends EnchantmentEntityDamageEffect>>> ENCHANTMENT_ENTITY_DAMAGE_EFFECT_TYPE = of("enchantment_entity_damage_effect_type");
     public static final RegistryKey<Registry<SpawnContextType>> SPAWN_CONTEXT_TYPE = of("spawn_context_type");
     public static final RegistryKey<Registry<SpawnSelectorType<?>>> SPAWN_SELECTOR_TYPE = of("spawn_selector_type");
@@ -35,6 +35,8 @@ public final class MSRegistryKeys {
     public static final RegistryKey<Registry<SpawnTable>> SPAWN_TABLE = dynamicOf(
             "spawn_table", () -> SpawnTable.CODEC
     );
+    public static final RegistryKey<Registry<WorldMarkType<?>>> WORLD_MARK_TYPE = of("world_mark_type");
+    public static final RegistryKey<Registry<AttachmentType<?>>> ATTACHMENT_TYPE = of("attachment_type");
 
     private MSRegistryKeys() {}
 

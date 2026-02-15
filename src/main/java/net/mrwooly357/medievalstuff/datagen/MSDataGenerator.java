@@ -11,6 +11,9 @@ import net.mrwooly357.medievalstuff.datagen.provider.MSEnUSTranslationProvider;
 import net.mrwooly357.medievalstuff.enchantment.MSEnchantments;
 import net.mrwooly357.medievalstuff.entity.spawn.SpawnTables;
 import net.mrwooly357.medievalstuff.registry.MSRegistryKeys;
+import net.mrwooly357.medievalstuff.structure.MSStructureSets;
+import net.mrwooly357.medievalstuff.structure.pool.MSStructurePools;
+import net.mrwooly357.medievalstuff.world.gen.structure.MSStructures;
 import org.jetbrains.annotations.NotNull;
 
 public final class MSDataGenerator implements DataGeneratorEntrypoint {
@@ -28,6 +31,9 @@ public final class MSDataGenerator implements DataGeneratorEntrypoint {
 	public void buildRegistry(RegistryBuilder builder) {
 		builder.addRegistry(RegistryKeys.ENCHANTMENT, MSEnchantments::bootstrap);
 		builder.addRegistry(MSRegistryKeys.SPAWN_TABLE, SpawnTables::bootstrap);
+		builder.addRegistry(RegistryKeys.TEMPLATE_POOL, MSStructurePools::bootstrap);
+		builder.addRegistry(RegistryKeys.STRUCTURE, MSStructures::bootstrap);
+		builder.addRegistry(RegistryKeys.STRUCTURE_SET, MSStructureSets::bootstrap);
 	}
 
 	@Override
